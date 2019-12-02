@@ -1,0 +1,232 @@
+\documentclass{beamer}
+\usepackage[orientation=portrait,size=custom,height=91.44,width=121.92,scale=1.4,debug]{beamerposter}
+\mode<presentation>{\usetheme{ZH}}
+%\usepackage{chemformula}
+\usepackage[utf8]{inputenc}
+%\usepackage[german, english]{babel} % required for rendering German special characters
+%\usepackage{siunitx} %pretty measurement unit rendering
+% \usepackage{hyperref} %enable hyperlink for urls
+\usepackage{ragged2e}
+\usepackage[style=numeric,maxbibnames=99,maxcitenames=2,natbib=true,backend=biber]{biblatex}
+\usepackage[font=scriptsize,justification=justified]{caption}
+\usepackage{array,booktabs,tabularx}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{forloop}
+\usepackage{graphicx}
+\usepackage{lmodern}
+
+% \usepackage{mathtools}
+% \usepackage{amssymb}
+\usepackage[capitalize]{cleveref}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{xcolor}
+% \usepackage{forloop}
+% \usepackage{algorithm}
+% \usepackage{algorithmicx}
+% \usepackage{paralist}
+%\usepackage{sectsty}% http://ctan.org/pkg/sectsty
+% \usepackage{titlecaps}% http://ctan.org/pkg/titlecaps
+\usepackage{mathtools,cuted}
+\usepackage{breqn}
+\usepackage{forloop}
+\usepackage{algorithm}
+\usepackage{graphicx}
+\usepackage{lmodern}
+
+% \usepackage{mathtools}
+% \usepackage{amssymb}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{xcolor}
+% \usepackage{forloop}
+% \usepackage{algorithm}
+% \usepackage{algorithmicx}
+% \usepackage{paralist}
+%\usepackage{sectsty}% http://ctan.org/pkg/sectsty
+% \usepackage{titlecaps}% http://ctan.org/pkg/titlecaps
+\usepackage{mathtools,cuted}
+
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{breqn}
+\usepackage{forloop}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{paralist}
+%\usepackage{natbib}
+\usepackage{xspace}
+\usepackage{algpseudocode}
+\usepackage{paralist}
+%\usepackage{natbib}
+\usepackage{xspace}
+
+\addbibresource{reference-list.bib}
+
+\newcolumntype{Z}{>{\centering\arraybackslash}X} % centered tabularx columns
+%\sisetup{per=frac,fraction=sfrac}
+
+% edit this depending on how tall your header is. We should make this scaling automatic :-/
+\newlength{\columnheight}
+\setlength{\columnheight}{104cm}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\newcommand{\kl}[2]{D_{\mathrm{KL}}( #1 \parallel #2 )}
+\newcommand{\js}[2]{D_{\mathrm{JS}}( #1 \parallel #2 )}
+\newcommand{\wjs}[3]{D_{\mathrm{GJS}}^{#1}( #2 \parallel #3 )}
+%\newcommand{\mil}[2]{D_{\mathrm{MIL}}( #1 \parallel #2 )}
+\newcommand{\td}[2]{ \Delta ( #1 \parallel #2 )}
+
+%\newtheorem{theorem}{Theorem}
+%\newtheorem{proposition}{Proposition}
+%\newtheorem{corollary}{Corollary}
+%\newtheorem{lemma}{Lemma}
+%\theoremstyle{definition}
+%\newtheorem{definition}{Definition}
+
+\DeclareMathOperator*{\essinf}{ess\,inf}
+\DeclareMathOperator*{\esssup}{ess\,sup}
+\DeclareMathOperator{\hel}{hel}
+\DeclareMathOperator{\pr}{Pr}
+
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\csch}{csch}
+\DeclareMathOperator{\mil}{mil}
+\DeclareMathOperator{\sign}{sign}
+
+\newcommand{\ie}{\emph{i.e.}}
+\newcommand{\eg}{\emph{e.g.}}
+
+\newcommand{\kr}{Kre\u{\i}n\xspace}
+\newcommand{\splsh}{\textsc{Simple-LSH}\xspace}
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+% Caligraphics and Board Letters
+\newcommand{\defcal}[1]{\expandafter\newcommand\csname 
+	c#1\endcsname{{\mathcal{#1}}}}
+\newcommand{\defbb}[1]{\expandafter\newcommand\csname 
+	b#1\endcsname{{\mathbb{#1}}}}
+\newcommand{\defbf}[1]{\expandafter\newcommand\csname 
+	bf#1\endcsname{{\mathbf{#1}}}}
+\newcounter{calBbCounter}
+\forLoop{1}{26}{calBbCounter}{
+	\edef\letter{\Alph{calBbCounter}}
+	\expandafter\defcal\letter
+	\expandafter\defbb\letter
+	\expandafter\defbf\letter
+}
+\forLoop{1}{26}{calBbCounter}{
+	\edef\letter{\alph{calBbCounter}}
+	% 	\expandafter\defcal\letter
+	% 	\expandafter\defbb\letter
+	\expandafter\defbf\letter
+}
+
+\title{\huge Locality-Sensitive Hashing for $f$-Divergences and \kr Kernels: 
+Mutual 
+	Information Loss and Beyond}
+\author{
+	\underline{Lin Chen}$ ^{1,2} $,
+	Hossein Esfandiari$ ^1 $,
+	Thomas Fu$ ^1 $, and
+	Vahab Mirrokni$ ^1 $
+}
+\institute{\large
+	$ ^1 $Google Research, $ ^2 $Yale University
+}
+\date{\today}
+
+\begin{document}
+\begin{frame}
+\vspace{0.5cm}
+\begin{columns}
+	\begin{column}{.32\textwidth}
+		\begin{block}{Introduction}
+			In this paper, we first study LSH schemes for $ f 
+			$-divergences\footnote{The 
+				formal definition of $ f $-divergence is presented in 
+				\cref{sub:f_divergence}.} 
+			between 
+			%, which measure 
+			%the distance between
+			two probability distributions. 
+			We first in \cref{thm:main} provide a simple reduction tool for 
+			designing LSH 
+			schemes for 
+			the family of $f$-divergence distance functions. This proposition 
+			is not hard 
+			to prove but might be of independent interest. 
+			%This is based on designing an LSH scheme for an $ f $-divergence 
+			%function based on approximation via another distance function that 
+			%admits an LSH family.
+			Next we use this tool and provide LSH schemes for two examples of 
+			$f$-divergence distance functions, Jensen-Shannon divergence and 
+			triangular discrimination.
+			Interestingly our result holds for a generalized version of 
+			Jensen-Shannon divergence.
+			%, the mutual information loss divergence (MIL).
+			We apply this tool to design and analyze an LSH scheme for the 
+			%well-motivated
+			generalized Jensen-Shannon (GJS)
+			% mutual information loss 
+			divergence through approximation by the squared Hellinger distance. 
+			We use a similar technique to provide an LSH for triangular 
+			discrimination. Our 
+			approximation is provably lower bounded by a factor $0.69$ for the 
+			Jensen-Shannon
+			divergence and is lower bounded by a factor $0.5$ for triangular 
+			discrimination. 
+			The approximation result of the generalized Jensen-Shannon 
+			divergence by the 
+			squared Hellinger requires a more involved analysis and the lower 
+			and upper 
+			bounds depend on the weight parameter.
+			This approximation result may be of independent interest for other 
+			machine learning tasks such as approximate information-theoretic 
+			clustering~\citep{chaudhuri2008finding}.
+			Our technique may be useful for designing LSH schemes for other 
+			$f$-divergences.
+			% distance functions.
+			
+			Next, we 
+			%take a step further and
+			propose a general approach to designing an LSH for \kr kernels. A 
+			\kr kernel is a kernel function that can be expressed as the 
+			difference of two positive definite kernels. 
+			Our approach is built upon a reduction to the problem of maximum 
+			inner product search 
+			(MIPS)~\citep{shrivastava2014asymmetric,neyshabur2015symmetric,yan2018norm}.
+			 
+			In contrast to our LSH schemes for $ f $-divergence functions via 
+			approximation, our approach for \kr kernels involves no 
+			approximation and is theoretically \emph{lossless}.
+			Contrary to \citep{mu2010non}, this approach is data-independent.
+			We exemplify our approach by designing an LSH function specifically 
+			for mutual information loss. Mutual information loss is of our 
+			particular interest due to its several important applications such 
+			as model compression 
+			\cite{bateni2019categorical,dhillon2003divisive}, and compression 
+			in discrete memoryless channels 
+			\cite{
+				kartowsky2018greedy,sakai2014suboptimal,
+				%	cicalese2017bounds,
+				zhang2016low}.
+		\end{block}
+	\end{column}
+	\begin{column}{.32\textwidth}
+		
+	\end{column}
+	\begin{column}{.32\textwidth}
+		\begin{block}{References}
+\mbox{}\vspace{-\baselineskip}
+				\printbibliography
+
+		\end{block}
+	\end{column}
+\end{columns}
+\end{frame}
+\end{document}

@@ -1,0 +1,12 @@
+
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.log
+*.nav
+*.out
+poster.run.xml
+poster.snm
+*.gz
+poster.toc
