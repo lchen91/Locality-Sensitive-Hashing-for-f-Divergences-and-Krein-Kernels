@@ -1,0 +1,168 @@
+\ProvidesPackage{beamerthemeYale}  % this style was created by Philippe Dreuw and Thomas Deselaers
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{tangocolors}
+\selectcolormodel{cmyk}
+\mode<presentation>
+
+% custom colors
+% http://www.colorsontheweb.com/colorwizard.asp#wizard, used start set: #535967
+% 535967 (mittel) 
+% 0e0f12 (schwarz)
+% a0a5b2 (hell) 
+% 5d5d5d (gray)   
+% cd995d (orange, hell) 
+% F79C32 (orange, mittel) 
+% FF7e00 (orange, stark) 
+% FFBD00 (orange, gelblich) 
+
+\definecolor{YaleLightBlue}{HTML}{63AAFF}
+\definecolor{YaleCoreBlue}{HTML}{00356B}
+\definecolor{YaleDarkBlue}{HTML}{286DC0}
+\definecolor{YaleCoreWhite}{HTML}{FFFFFF}
+\definecolor{YaleLighterGrey}{HTML}{DDDDDD}
+\definecolor{YaleLightGrey}{HTML}{978D85}
+\definecolor{YaleCoreGrey}{HTML}{4A4A4A}
+\definecolor{YaleDarkGrey}{HTML}{222222}
+\definecolor{YaleCoreOrange}{HTML}{BD5319}
+\definecolor{YaleCoreGreen}{HTML}{5F712D}
+ 
+\setbeamercolor{headline}{fg=tabutter,bg=YaleCoreWhite}
+\setbeamercolor{footline}{fg=tabutter, bg=YaleCoreWhite}
+\setbeamerfont{footline}{size=\large,series=\tt}
+\setbeamercolor{separation line}{bg=YaleCoreBlue}
+\setbeamercolor{title in headline}{fg=YaleCoreBlue}
+\setbeamercolor{author in headline}{fg=YaleCoreBlue}
+\setbeamercolor{institute in headline}{fg=YaleCoreBlue}
+
+\setbeamercolor{framesubtitle}{fg=YaleCoreWhite, bg=YaleCoreBlue}
+\setbeamercolor{author in head/foot}{fg=YaleCoreWhite,bg=YaleCoreBlue}
+\setbeamercolor{title in head/foot}{fg=YaleCoreWhite,bg=YaleCoreBlue}
+
+\setbeamercolor*{normal text}{fg=tachameleon, bg=YaleCoreWhite}
+\setbeamercolor*{block body}{bg=YaleCoreWhite,fg=black}
+\setbeamercolor*{block title}{fg=YaleCoreWhite,bg=YaleCoreBlue}
+\setbeamerfont{block title}{size=\large,series=\bf}
+\setbeamercolor{upper separation line head}{fg=YaleCoreWhite}
+
+
+
+
+\setbeamertemplate{navigation symbols}{}  % no navigation on a poster
+\setbeamercolor{alerted text}{fg=YaleCoreBlue}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{block begin}{
+  \vskip.75ex
+  \begin{beamercolorbox}[rounded=true,shadow=true,leftskip=2ex,colsep*=.75ex]{block title}%
+    \usebeamerfont*{block title}\insertblocktitle
+  \end{beamercolorbox}%
+  {\ifbeamercolorempty[bg]{block body}{}{\nointerlineskip\vskip-0.5pt}}%
+  \usebeamerfont{block body}%
+  \begin{beamercolorbox}[rounded=true,shadow=true,colsep*=.75ex,sep=.75ex,vmode]{block body}%
+    \ifbeamercolorempty[bg]{block body}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
+  }
+  \setbeamertemplate{block end}{
+  \end{beamercolorbox}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{headline}{  
+  \leavevmode
+
+   \begin{beamercolorbox}[wd=\paperwidth]{headline}
+    \begin{columns}[T]
+    	\begin{column}{.01\paperwidth}
+  
+    	\end{column}
+    	 \begin{column}{.13\paperwidth}
+    	 	 \vskip 0.03\paperheight
+        \hskip 1.8\paperheight
+    	 	 \centering
+    	 	\includegraphics[width=\linewidth]{figures/google.pdf}
+    	\end{column}
+      \begin{column}{.72\paperwidth}
+        \vskip 0.015\paperheight
+%        \raggedleft
+\centering
+        \usebeamercolor{title in 
+        headline}{\color{fg}\textbf{\Huge{\inserttitle}}\\[3ex]}
+        \usebeamercolor{author in headline}{\color{fg}\Large{\insertauthor}\\ }
+        \usebeamercolor{institute 
+in headline}{\color{fg}\Large{\insertinstitute}\\[1ex]} 
+      \end{column}
+      \begin{column}{.14\paperwidth}
+        \vskip 0.03\paperheight
+        \centering
+        \includegraphics[width=0.7\linewidth]{figures/logo.pdf}
+      \end{column}
+    \end{columns}
+  \end{beamercolorbox}
+  \begin{beamercolorbox}[wd=\paperwidth]{lower separation line head}
+    \rule{0pt}{1pt}
+  \end{beamercolorbox}
+}
+
+%  \setbeamertemplate{headline}{  
+%    \leavevmode
+%    \begin{beamercolorbox}[sep=0.5cm,wd=.8\paperwidth]{headline}
+%      \usebeamercolor{title in headline}{\raggedleft\color{fg}\textbf{\LARGE{\inserttitle}}\\[1ex]}
+%      \usebeamercolor{author in headline}{\raggedleft\color{fg}\large{\insertauthor}\\[1ex]}
+%      \usebeamercolor{institute in headline}{\raggedleft\color{fg}\large{\insertinstitute}\\[1ex]}     
+%    \end{beamercolorbox}%
+%    \begin{beamercolorbox}[wd=.2\paperwidth]{logo in headline}
+%      \centering
+%      \LARGE{LOGO}
+%    \end{beamercolorbox}  
+
+%    \begin{beamercolorbox}[wd=\paperwidth]{lower separation line head}
+%      \rule{0pt}{2pt}
+%    \end{beamercolorbox}
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{footline}{
+  \begin{beamercolorbox}[wd=\paperwidth]{upper separation line foot}
+    \rule{0pt}{2pt}
+  \end{beamercolorbox}
+  
+  \leavevmode%
+  
+\hbox{\begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm 
+plus1fill,rightskip=1cm]{author in head/foot}%
+      {\small \textbf{Yale Institute for Network Science}}
+    \end{beamercolorbox}%
+    
+\begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=1cm,
+rightskip=.3cm plus1fil]{title in head/foot}%
+      {\small \textbf{Yale University}}
+    \end{beamercolorbox}}%
+  \vskip0pt%
+  \begin{beamercolorbox}[wd=\paperwidth]{lower separation line foot}
+    \rule{0pt}{2pt}
+  \end{beamercolorbox}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% adapt height of imtemize rectangles
+\setbeamertemplate{itemize items}[triangle]
+\setbeamertemplate{itemize item}{\raisebox{0.12ex}{\setlength{\leftmargin}{10pt}\hbox{$\blacktriangleright$}}}
+\setbeamertemplate{itemize subitem}{\raisebox{0.12ex}{$\triangleright$}}
+% or define your own template using \defbeamertemplate{itemize item}, see beameruserguide.pdf
+
+% equal font sizes for all levels
+\setbeamerfont{itemize/enumerate body}{size=\normalsize}
+\setbeamerfont{itemize/enumerate subbody}{size=\normalsize}
+\setbeamerfont{itemize/enumerate subsubbody}{size=\normalsize}
+
+
+\mode<all>
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-PDF-mode: t
+%%% TeX-master: "poster"
+%%% End: 

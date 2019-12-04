@@ -1,232 +1,526 @@
-\documentclass{beamer}
-\usepackage[orientation=portrait,size=custom,height=91.44,width=121.92,scale=1.4,debug]{beamerposter}
-\mode<presentation>{\usetheme{ZH}}
-%\usepackage{chemformula}
-\usepackage[utf8]{inputenc}
-%\usepackage[german, english]{babel} % required for rendering German special characters
-%\usepackage{siunitx} %pretty measurement unit rendering
-% \usepackage{hyperref} %enable hyperlink for urls
-\usepackage{ragged2e}
-\usepackage[style=numeric,maxbibnames=99,maxcitenames=2,natbib=true,backend=biber]{biblatex}
-\usepackage[font=scriptsize,justification=justified]{caption}
-\usepackage{array,booktabs,tabularx}
-\usepackage{amsmath,amsthm,amssymb}
-\usepackage{forloop}
-\usepackage{graphicx}
-\usepackage{lmodern}
+%
+\documentclass[final]{beamer} 
+  \mode<presentation> {  
+    \usetheme{Yale} 
+  }
 
-% \usepackage{mathtools}
-% \usepackage{amssymb}
-\usepackage[capitalize]{cleveref}
-\usepackage{subcaption}
-\usepackage{booktabs}
-\usepackage{xcolor}
-% \usepackage{forloop}
-% \usepackage{algorithm}
-% \usepackage{algorithmicx}
-% \usepackage{paralist}
-%\usepackage{sectsty}% http://ctan.org/pkg/sectsty
-% \usepackage{titlecaps}% http://ctan.org/pkg/titlecaps
-\usepackage{mathtools,cuted}
-\usepackage{breqn}
-\usepackage{forloop}
-\usepackage{algorithm}
-\usepackage{graphicx}
-\usepackage{lmodern}
+\definecolor{beamer@blendedblue}{HTML}{BD5319}
+\usepackage{verbatim,bm}
+\DeclareMathOperator*{\supp}{supp}
+\DeclareMathOperator*{\diam}{diam}
+\usepackage{tikz,fp}
+\usetikzlibrary{calc,patterns}
+  \usepackage[english]{babel}
+%
+  \usepackage{amsmath,amsthm, amssymb, latexsym}
+  \usepackage[ruled,linesnumbered,vlined]{algorithm2e}
+  \usepackage{bm}
+  \usepackage{tcolorbox}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{cleveref}
+\tcbuselibrary{skins}
 
-% \usepackage{mathtools}
-% \usepackage{amssymb}
-\usepackage{subcaption}
-\usepackage{booktabs}
-\usepackage{xcolor}
-% \usepackage{forloop}
-% \usepackage{algorithm}
-% \usepackage{algorithmicx}
-% \usepackage{paralist}
-%\usepackage{sectsty}% http://ctan.org/pkg/sectsty
-% \usepackage{titlecaps}% http://ctan.org/pkg/titlecaps
-\usepackage{mathtools,cuted}
 
-\usepackage{amsmath,amsthm,amssymb}
-\usepackage{breqn}
-\usepackage{forloop}
-\usepackage{algorithm}
-\usepackage{algorithmicx}
-\usepackage{algpseudocode}
-\usepackage{paralist}
-%\usepackage{natbib}
-\usepackage{xspace}
-\usepackage{algpseudocode}
-\usepackage{paralist}
-%\usepackage{natbib}
-\usepackage{xspace}
+\definecolor{YaleLightBlue}{HTML}{63AAFF}
+\definecolor{YaleCoreBlue}{HTML}{00356B}
+\definecolor{YaleDarkBlue}{HTML}{286DC0}
+\definecolor{YaleLighterGrey}{HTML}{DDDDDD}
+\definecolor{YaleLightGrey}{HTML}{978D85}
+\definecolor{YaleCoreGrey}{HTML}{4A4A4A}
+\definecolor{YaleDarkGrey}{HTML}{222222}
+\definecolor{YaleCoreOrange}{HTML}{BD5319}
+\definecolor{YaleCoreGreen}{HTML}{5F712D}
+\definecolor{YaleGreen}{HTML}{5F712D}
+\definecolor{DarkRed}{HTML}{B8433B}
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+\setbeamercolor{caption}{fg=YaleCoreGreen}
+\setlength\abovecaptionskip{-20pt}
 
-\addbibresource{reference-list.bib}
+\tcbset{tab2/.style={enhanced,fonttitle=\bfseries,fontupper=\normalsize\sffamily,
+colback=YaleLightBlue!10!white,colframe=YaleCoreBlue,colbacktitle=YaleCoreBlue,
+coltitle=black,center title}}
 
-\newcolumntype{Z}{>{\centering\arraybackslash}X} % centered tabularx columns
-%\sisetup{per=frac,fraction=sfrac}
 
-% edit this depending on how tall your header is. We should make this scaling automatic :-/
-\newlength{\columnheight}
-\setlength{\columnheight}{104cm}
 
-\DeclareMathOperator*{\argmax}{arg\,max}
-\DeclareMathOperator*{\argmin}{arg\,min}
 
-\newcommand{\kl}[2]{D_{\mathrm{KL}}( #1 \parallel #2 )}
-\newcommand{\js}[2]{D_{\mathrm{JS}}( #1 \parallel #2 )}
-\newcommand{\wjs}[3]{D_{\mathrm{GJS}}^{#1}( #2 \parallel #3 )}
-%\newcommand{\mil}[2]{D_{\mathrm{MIL}}( #1 \parallel #2 )}
-\newcommand{\td}[2]{ \Delta ( #1 \parallel #2 )}
-
-%\newtheorem{theorem}{Theorem}
-%\newtheorem{proposition}{Proposition}
-%\newtheorem{corollary}{Corollary}
-%\newtheorem{lemma}{Lemma}
-%\theoremstyle{definition}
-%\newtheorem{definition}{Definition}
-
-\DeclareMathOperator*{\essinf}{ess\,inf}
-\DeclareMathOperator*{\esssup}{ess\,sup}
-\DeclareMathOperator{\hel}{hel}
-\DeclareMathOperator{\pr}{Pr}
-
-\DeclareMathOperator{\sech}{sech}
-\DeclareMathOperator{\csch}{csch}
-\DeclareMathOperator{\mil}{mil}
-\DeclareMathOperator{\sign}{sign}
-
-\newcommand{\ie}{\emph{i.e.}}
-\newcommand{\eg}{\emph{e.g.}}
-
+\newcommand{\Acc}{\text{Acc.}}
+\newcommand{\Dis}{\text{G}_{\text{Discr.}}}
+\newcommand{\LDis}{\text{L}_{\text{Discr.}}}
+\newcommand{\Knn}{\text{kNN-Pred}}
+\newcommand{\spaceClass}{\mathcal{H}}
+\newcommand{\optimal}{h^*}
+\newcommand{\optimalfair}{h^{*}_{\textup{fair}}}
 \newcommand{\kr}{Kre\u{\i}n\xspace}
-\newcommand{\splsh}{\textsc{Simple-LSH}\xspace}
 
-\renewcommand{\algorithmicrequire}{\textbf{Input:}}
-\renewcommand{\algorithmicensure}{\textbf{Output:}}
 
-% Caligraphics and Board Letters
-\newcommand{\defcal}[1]{\expandafter\newcommand\csname 
-	c#1\endcsname{{\mathcal{#1}}}}
-\newcommand{\defbb}[1]{\expandafter\newcommand\csname 
-	b#1\endcsname{{\mathbb{#1}}}}
-\newcommand{\defbf}[1]{\expandafter\newcommand\csname 
-	bf#1\endcsname{{\mathbf{#1}}}}
+  %
+  \usepackage{wrapfig}
+  \usefonttheme[onlymath]{serif}
+  \usepackage{graphicx}
+  \boldmath
+\usepackage[size=A0,scale=1.4,orientation=landskape]{beamerposter} 
+\title{Locality-Sensitive Hashing for $f$-Divergences and \kr Kernels: 
+	Mutual 
+	Information Loss and Beyond}
+\author{Lin Chen\inst{1,2}, 
+	Hossein Esfandiari\inst{1},
+	Thomas Fu\inst{1}, and
+	Vahab Mirrokni\inst{1}
+	 \vspace{10pt}}
+\institute{{  \inst{1}Google Research, \inst{2}Yale University }\vspace{10pt}}
+%
+
+\newlength{\columnheight}
+%
+\setlength{\columnheight}{105cm}
+%
+
+\usepackage{forloop}
+\newcommand{\defcal}[1]{\expandafter\newcommand\csname c#1\endcsname{{\mathcal{#1}}}}
+\newcommand{\defbb}[1]{\expandafter\newcommand\csname b#1\endcsname{{\mathbb{#1}}}}
 \newcounter{calBbCounter}
 \forLoop{1}{26}{calBbCounter}{
 	\edef\letter{\Alph{calBbCounter}}
 	\expandafter\defcal\letter
 	\expandafter\defbb\letter
-	\expandafter\defbf\letter
-}
-\forLoop{1}{26}{calBbCounter}{
-	\edef\letter{\alph{calBbCounter}}
-	% 	\expandafter\defcal\letter
-	% 	\expandafter\defbb\letter
-	\expandafter\defbf\letter
 }
 
-\title{\huge Locality-Sensitive Hashing for $f$-Divergences and \kr Kernels: 
-Mutual 
-	Information Loss and Beyond}
-\author{
-	\underline{Lin Chen}$ ^{1,2} $,
-	Hossein Esfandiari$ ^1 $,
-	Thomas Fu$ ^1 $, and
-	Vahab Mirrokni$ ^1 $
-}
-\institute{\large
-	$ ^1 $Google Research, $ ^2 $Yale University
-}
-\date{\today}
 
+\usepackage[absolute,overlay]{textpos}
+%
+\renewcommand{\vec}[1]{\mathbf{#1}}
+
+\usepackage{nicefrac}       %
+ 
+%
+\PassOptionsToPackage{table,pdftex,dvipsnames}{xcolor}
+\usepackage{array,booktabs,tabularx}
+\usepackage{multirow}
+\usepackage[numbers]{natbib}
+\usepackage{subfigure}
+\newcommand{\matroid}{\mathcal{I}}
+\DeclareMathOperator{\round}{round}
+\newcommand{\one}{\mathbf{1}}
+\newcommand{\constraint}{\mathcal{K}}
+\newcommand{\ie}{\emph{i.e.}\xspace}
+\newcommand{\AlgMeta}{\texttt{Meta-Frank-Wolfe}\xspace}
+\newcommand{\AlgVR}{\texttt{VR-Frank-Wolfe}\xspace}
+\newcommand{\Alg}{\texttt{Mono-Frank-Wolfe}\xspace}
+\newcommand{\AlgB}{\texttt{Bandit-Frank-Wolfe}\xspace}
+\newcommand{\AlgD}{\texttt{Responsive-Frank-Wolfe}\xspace}
+\newcommand{\OCSM}{\texttt{OCSM}\xspace}
+\newcommand{\BCSM}{\texttt{BCSM}\xspace}
+\newcommand{\RBSM}{\texttt{RBSM}\xspace}
+\newcommand{\BSM}{\texttt{BSM}\xspace}
+
+%
+\newcommand{\ground}{V}
+\newcommand{\AlgHybrid}{{\textsc{\textsc{Batch-Sieve-Streaming}\texttt{++}}}\xspace}
+\newcommand{\AlgParallelSampling}{{\textsc{Parallel-Threshold-Sampling}}\xspace}
+\newcommand{\AlgDistributedReducedMean}{{\textsc{Distributed-Reduced-Mean}}\xspace}
+\newcommand{\AlgUniform}{\cU_{\textsc{Distributed}}\xspace}
+\newcommand{\AlgThresholdSampling}{{\textsc{Threshold-Sampling}}\xspace}
+\newcommand{\AlgSieveStreamingPlus}{{\textsc{SieveStreaming}\texttt{++}}\xspace}
+\newcommand{\AlgSieveStreaming}{{\textsc{SieveStreaming}}\xspace}
+\newcommand{\AlgStreamingPreemption}{{\textsc{PreemptionStreaming}}\xspace}
+\newcommand{\AlgOne}{{\textsc{Sample-One-Streaming}}\xspace}
+\newcommand{\Opt}{\texttt{OPT}\xspace}
+\newcommand{\LB}{\texttt{LB}\xspace}
+\newcommand{\ind}{\mathds{1}}
+\newcommand{\threOne}{{\texttt{Threshold}}}
+\newcommand{\threTwo}{{\texttt{Threshold}_2}}
+\newcommand{\memory}{\texttt{B}}
+\newcommand{\ratio}{\texttt{C}}
+\newcommand{\buffer}{\cB}
+\newcommand{\AlgMulti}{{\textsc{MultiSource-Streaming}}\xspace}
+\newcommand{\AlgSampling}{{\textsc{Threshold-Sampling}}\xspace}
+\newcommand{\Prob}[2]{\Pr_{#1}\parens*{#2}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+%
+\usepackage{setspace}
+%
+\newlength{\sepwid}
+\newlength{\onecolwid}
+\newlength{\twocolwid}
+\newlength{\threecolwid}
+%
+%
+\setlength{\paperwidth}{48in} %
+\setlength{\paperheight}{36in} %
+\setlength{\sepwid}{0.001\paperwidth} %
+\setlength{\onecolwid}{0.32\paperwidth} %
+\setlength{\twocolwid}{0.464\paperwidth} %
+\setlength{\threecolwid}{0.708\paperwidth} %
+\setlength{\topmargin}{-0.9in} %
+%
+\usepackage{bm}
+\usepackage{graphicx}  %
+\usepackage{booktabs} %
+\usepackage{rotating}
 \begin{document}
-\begin{frame}
-\vspace{0.5cm}
-\begin{columns}
-	\begin{column}{.32\textwidth}
-		\begin{block}{Introduction}
-			In this paper, we first study LSH schemes for $ f 
-			$-divergences\footnote{The 
-				formal definition of $ f $-divergence is presented in 
-				\cref{sub:f_divergence}.} 
-			between 
-			%, which measure 
-			%the distance between
-			two probability distributions. 
-			We first in \cref{thm:main} provide a simple reduction tool for 
-			designing LSH 
-			schemes for 
-			the family of $f$-divergence distance functions. This proposition 
-			is not hard 
-			to prove but might be of independent interest. 
-			%This is based on designing an LSH scheme for an $ f $-divergence 
-			%function based on approximation via another distance function that 
-			%admits an LSH family.
-			Next we use this tool and provide LSH schemes for two examples of 
-			$f$-divergence distance functions, Jensen-Shannon divergence and 
-			triangular discrimination.
-			Interestingly our result holds for a generalized version of 
-			Jensen-Shannon divergence.
-			%, the mutual information loss divergence (MIL).
-			We apply this tool to design and analyze an LSH scheme for the 
-			%well-motivated
-			generalized Jensen-Shannon (GJS)
-			% mutual information loss 
-			divergence through approximation by the squared Hellinger distance. 
-			We use a similar technique to provide an LSH for triangular 
-			discrimination. Our 
-			approximation is provably lower bounded by a factor $0.69$ for the 
-			Jensen-Shannon
-			divergence and is lower bounded by a factor $0.5$ for triangular 
-			discrimination. 
-			The approximation result of the generalized Jensen-Shannon 
-			divergence by the 
-			squared Hellinger requires a more involved analysis and the lower 
-			and upper 
-			bounds depend on the weight parameter.
-			This approximation result may be of independent interest for other 
-			machine learning tasks such as approximate information-theoretic 
-			clustering~\citep{chaudhuri2008finding}.
-			Our technique may be useful for designing LSH schemes for other 
-			$f$-divergences.
-			% distance functions.
+	
+	%
+	%
+	
+	%
+	%
+	
+	\begin{frame}[t] %
+	\begin{columns}[t] %
+		%
+	\begin{column}{\onecolwid} %
+			\vspace{-40pt}
+				
+			\begin{block}{1. Submodular Functions}			
+			\begin{itemize}
+%
+%
+				
+				\item 	Submodularity is an intuitive diminishing returns 
+				property: 
+				a discrete set function $f:2^{V} \rightarrow \mathbb{R}_{+} $ is \structure{\textbf{submodular}} if for all sets $\textcolor{blue}{\bm{A}} \subseteq \textcolor{green}{\bm{B}} \subseteq V$
+				and $ \textcolor{red}{\bm{x}} \notin B$, we have
+				\[	 f(\textcolor{blue}{\bm{A}}  \cup \{ \textcolor{red}{\bm{x}}\}) - f(\textcolor{blue}{\bm{A}} ) \geq f(\textcolor{green}{\bm{B}} \cup \{ \textcolor{red}{\bm{x}}\}) - f(\textcolor{green}{\bm{B}})
+				\]
+%				\begin{figure}
+%					
+%\includegraphics[width=0.5\linewidth]{figures/submodular-illustration}
+%					 
+%					\label{fig:submodular_illustration}
+%%
+%				\end{figure}
+				Submodular function $f$ is \structure{\textbf{monotone}} if for all $\textcolor{blue}{\bm{A}} \subseteq \textcolor{green}{\bm{B}} $:
+				$f(\textcolor{blue}{\bm{A}}) \leq f(\textcolor{green}{\bm{B}})$
+				
+				\item  Continuous analogue: a 
+				differentiable function $F:\mathcal{X}\to \mathbb{R}_{\ge 0}$ 
+				defined on a box $\mathcal{X}\triangleq 
+				\prod_{i=1}^d 
+				\mathcal{X}_i$, where each $\mathcal{X}_i$ is a closed interval 
+				of 
+				$\mathbb{R}_{\ge 0}$. We say that $F$ is 
+				\structure{\textbf{Continuous 
+				DR-submodular}}~\citep{bian16guaranteed} if for 
+				every $\textcolor{blue}{x},\textcolor{green}{y}\in \mathcal{X}$ 
+				that satisfy $\textcolor{blue}{x} 
+				\leq \textcolor{green}{y}$ and every 
+				$i\in 
+				[d]\triangleq \{1,\dots, d\}$, we have 
+				$$\frac{\partial F}{\partial x_i}(\textcolor{blue}{x}) \geq 
+				\frac{\partial 
+				F}{\partial 
+					x_i}(\textcolor{green}{y}).$$
+			\end{itemize}
+		%
+		\end{block}
 			
-			Next, we 
-			%take a step further and
-			propose a general approach to designing an LSH for \kr kernels. A 
-			\kr kernel is a kernel function that can be expressed as the 
-			difference of two positive definite kernels. 
-			Our approach is built upon a reduction to the problem of maximum 
-			inner product search 
-			(MIPS)~\citep{shrivastava2014asymmetric,neyshabur2015symmetric,yan2018norm}.
-			 
-			In contrast to our LSH schemes for $ f $-divergence functions via 
-			approximation, our approach for \kr kernels involves no 
-			approximation and is theoretically \emph{lossless}.
-			Contrary to \citep{mu2010non}, this approach is data-independent.
-			We exemplify our approach by designing an LSH function specifically 
-			for mutual information loss. Mutual information loss is of our 
-			particular interest due to its several important applications such 
-			as model compression 
-			\cite{bateni2019categorical,dhillon2003divisive}, and compression 
-			in discrete memoryless channels 
-			\cite{
-				kartowsky2018greedy,sakai2014suboptimal,
-				%	cicalese2017bounds,
-				zhang2016low}.
-		\end{block}
-	\end{column}
-	\begin{column}{.32\textwidth}
 		
-	\end{column}
-	\begin{column}{.32\textwidth}
-		\begin{block}{References}
-\mbox{}\vspace{-\baselineskip}
-				\printbibliography
-
+	\begin{block}{2. Bandit Optimization}
+			\structure{\textbf{Online optimization}} is a repeated two-player 
+			game. At each round 
+			$t$:
+			\begin{itemize}
+				\item The learner chooses an action $x_t$ from a convex set 
+				$\constraint\subseteq \mathbb{R}^n$;
+				
+				\item The adversary chooses a reward function $F_t$ from $ 
+				\mathcal{F} 
+				$, a family  
+				of real-valued functions;
+				
+				\item The learner receives a reward $F_t(x_{t})$, and observes 
+				feedback.
+			\end{itemize}
+			The aim is to maximize the \structure{\textbf{regret}}: the 
+			gap between 
+			her 
+			accumulated reward and the reward of the best single choice in 
+			hindsight
+			$$
+			\mathcal{R}_{T} \triangleq \max_{x\in \constraint} \left\{ 
+			\sum_{t=1}^T 
+			F_t(x) - 
+			\sum_{t=1}^T F_t(x_t)\right\}
+			$$
+			
+			In the \structure{\textbf{bandit}} setting, the feedback is only a 
+			single real 
+			number 
+			$F_t(x_t)$. 
+			
+%			\begin{figure}
+%				\includegraphics[width=0.5\linewidth]{figures/illustration} 
+%				\label{fig:illustration}
+%				\caption{\normalsize Bandit Problems}
+%			\end{figure}
+		
+		However, even in the offline scenario, continuous 
+		DR-submodular maximization problem cannot be approximated within a 
+		factor of $(1-1/e+\epsilon)$ for any $\epsilon>0$ in polynomial time, 
+		unless 
+		$RP=NP$ \citep{bian16guaranteed}. Therefore, we consider the 
+		\structure{\textbf{$(1-1/e)$-regret}}
+		\[
+		\mathcal{R}_{1-1/e, T} \triangleq(1-1/e) \max_{x\in \constraint} 
+		\left\{ 
+		\sum_{t=1}^T 
+		F_t(x) - \sum_{t=1}^T F_t(x_t)\right\}.
+		\]
+		
+		%
 		\end{block}
-	\end{column}
-\end{columns}
-\end{frame}
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+			
+		\end{column} %
+ 		\begin{column}{\sepwid}\end{column} %
+		%
+\begin{column}{\onecolwid} %
+\vspace{-40pt}
+
+\begin{block}{3. Our Contribution}
+We studied the following three problems:
+\begin{itemize}
+	\item \structure{\OCSM}: the Online Continuous DR-Submodular Maximization 
+	problem, 
+	\item \structure{\BCSM}: the Bandit Continuous DR-Submodular Maximization 
+	problem, and 
+	\item \structure{\RBSM}: the Responsive Bandit Submodular Maximization 
+	problem.
+\end{itemize}
+
+\structure{\textbf{Comparison of previous and our proposed 
+		algorithms:}}
+
+\begin{table}[tbh]
+	%
+		%
+	\begin{center}
+		\begin{tabular}{c c c c c }
+			\toprule
+			\small \multirow{ 2}{*}{Setting} & \small \multirow{ 
+			2}{*}{Algorithm} & 
+			\small Stochastic   & \small \# of  grad.  & \small \multirow{ 
+			2}{*}{$(1-1/e)$-regret}  
+			\\ 
+			& &    \small gradient & \small evaluations &   \\ \midrule
+			\multirow{ 3}{*}{\OCSM}   & \texttt{Meta-FW}\citep{Chen2018Online} 
+			& No & 
+			$T^{1/2}$ & $O(\sqrt{T})$ \\ 
+			& \texttt{VR-FW}\citep{chen2018projection}   & Yes & $T^{3/2}$ & 
+			$O(\sqrt{T})$ \\ 
+			&  \structure{\textbf{Mono-FW (this 
+					work)}}   & Yes 
+			& $1$ & $O(T^{4/5})$ \\ \midrule
+			\BCSM & \structure{\textbf{Bandit-FW (this 
+					work)}} 
+			& - & - & $O(T^{8/9})$\\ \midrule
+			\RBSM & \structure{\textbf{Responsive-FW (this 
+					work)}} & - & 
+			- 
+			& $O(T^{8/9})$\\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+\end{table}
+\end{block}		
+\vspace{3pt}
+
+\begin{block}{4. One-shot Online Continuous DR-Submodular Maximization}
+	Offline \structure{\textbf{Frank-Wolfe (FW)}} method for maximizing
+	monotone continuous DR-submodular functions: at $ k $-th 
+	iteration, solves a linear optimization problem
+	\begin{equation*}\label{eq:linear_opt}
+	v^{(k)}\gets \argmax_{v\in 
+		\constraint} \langle 
+	v, \nabla F(x^{(k)})\rangle
+	\end{equation*}
+	which is used to update
+	$x^{(k+1)} \gets x^{(k)} + \eta_k v^{(k)}$, 
+	where $ \eta_k $ is the step size. We extended it to online setting.
+	
+	\begin{itemize}
+	\item \structure{\textbf{Obstacle 1:}} To obtain $v_t^{(k)}$, we have to 
+	know the gradient in advance.
+	
+	\structure{\textbf{Solution:}} Use $K$ no-regret online linear maximization 
+	oracles $\{\mathcal{E}^{(k)}\}, k\in[K]$, with $\langle \cdot, 
+	d_t^{(k)}\rangle$ being the objective function, and $v_t^{(k)}$ being the 
+	output, where $d_t^{(k)}$ is an estimation of $\nabla F_t(x_t(k))$.
+	
+	\item \structure{\textbf{Obstacle 2:}} To obtain a 
+	\structure{\textbf{one-shot}} algorithm, we need to reduce $K$ from 
+	$T^{3/2}$ 
+	\citep{chen2018projection,Chen2018Online} to $1$.
+	
+	\structure{\textbf{Solution:}} Proposed the \structure{\textbf{blocking 
+	procedure}} and the \structure{\textbf{permutation methods}}. 
+	\end{itemize}
+	\
+%	\begin{figure}
+%		
+%\includegraphics[height=0.56\textwidth]{./figures/Submodular_bandit_figure.pdf}
+%		\label{fig:b}
+%	\end{figure}
+	\vspace{16pt}
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+
+\end{block}
+
+
+
+\end{column} %
+ 		\begin{column}{\sepwid}\end{column} %
+		%
+\begin{column}{\onecolwid} %
+	\vspace{-40pt}
+	
+		\begin{block}{5. Bandit Continuous DR-Submodular Maximization}
+		\structure{\textbf{One-point Gradient Estimator:}} define the 
+		$\delta$-smoothed version of a 
+		function $F$ as $\hat{F_\delta}(x) \triangleq \mathbb{E}_{v \sim 
+			B^d}[F(x + \delta v)]$. 
+		Then we have
+		$$\nabla 
+		\hat{F}_\delta (x) =  \mathbb{E}_{u \sim S^{d-1}} \left[ 
+		\frac{d}{\delta}F(x + 
+		\delta u)u\right].$$
+		
+		\begin{itemize}
+			\item \structure{\textbf{Obstacle:}} The point $x + \delta u$ may 
+			fall outside of $\constraint$.
+			
+			\structure{\textbf{Solution:}} 
+			Introduce the notion of \structure{\textbf{$\delta$-interior}}. A 
+			set 
+			$\constraint'$ is a $ \delta $-interior of $\constraint$ if it is a 
+			\emph{subset} of
+			\begin{equation*}
+			\text{int}_\delta(\constraint) = \{x \in \constraint | \inf_{s \in 
+			\partial 
+				\constraint} d(x,s) \ge \delta\}\,.    
+			\end{equation*}
+			
+%			\begin{figure}
+%				\subfigure[\normalsize Example of $\delta$-interior]{
+%					
+%\hbox{\hspace{1em}\includegraphics[width=0.6\linewidth]{figures/Fig1-crop.pdf}}}
+%				\subfigure[\normalsize Construction of $\delta$-interior]{
+%					
+%\includegraphics[width=0.3\linewidth]{figures/Fig2-crop.pdf}}
+%				
+%				%
+%			\end{figure}
+			
+			Also define the \structure{\textbf{discrepancy}} 
+			between $\constraint$ and $\constraint'$ by 
+			\begin{equation*}
+			d(\constraint,\constraint') = \sup_{x \in \constraint} 
+			d(x,\constraint'),   
+			\end{equation*}
+			When $F_t$ is Lipschitz and 
+			$d(\constraint,\constraint')$ is small, 
+			we can \structure{\textbf{approximate}} the optimal total reward on 
+			$\constraint$ 
+			%
+			by that on $\constraint'$. 
+				%
+				%
+			
+			\structure{\textbf{Lemma 1:}} Under some regularization 
+			assumptions, %
+				$\constraint'=(1-\alpha)\constraint+\delta \one$  
+				is a  $\delta$-interior of $\constraint$ with $d(\constraint, 
+				\constraint') \leq [\sqrt{d}(\frac{R}{r}+1) + \frac{R}{r}] 
+				\delta$. 
+		\end{itemize}
+%
+%
+%
+%
+		%
+	\end{block}
+	
+
+	
+	\begin{block}{6. Bandit Submodular Set Maximization}
+		\begin{itemize}
+\item \structure{\textbf{Obstacle:}} If there is a rounding 
+scheme 
+$ \round_\matroid:[0,1]^d \to \matroid $ satisfying the 
+following unbiasedness condition
+\begin{equation*}\label{eq:sampling_scheme}
+\mathbb{E}[f(\round_\matroid(x))] = F(x),\quad \forall x\in [0,1]^d
+\end{equation*}
+for any submodular set function $ f $ within the matroid constraint $\matroid$ 
+and its multilinear extension $ F $, we can solve the discrete bandit problem 
+by applying 
+\structure{\textbf{Bandit-FW}} on $F_t$. However, this kind of rounding schemes 
+does \structure{\textbf{NOT}} exist (\structure{\textbf{Lemma 2}}).
+
+
+\structure{\textbf{Solution:}} Study the \structure{\textbf{responsive}} model. 
+If $X_t \notin \matroid$, 
+we can still observe the function value $f_t(X_t)$ 
+as feedback, while the received reward at round $t$ is $ 0 $. 
+%
+%
+\end{itemize} 	
+	\end{block}
+	
+	\begin{block}{7. References}
+		\bibliographystyle{plainnat}
+		\bibliography{main.bib}
+	\end{block}
+	
+\end{column} %
+ 
+		
+	\end{columns} %
+	
+\end{frame} %
+
 \end{document}
