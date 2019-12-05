@@ -94,13 +94,36 @@ coltitle=black,center title}}
 %
 
 \usepackage{forloop}
-\newcommand{\defcal}[1]{\expandafter\newcommand\csname c#1\endcsname{{\mathcal{#1}}}}
-\newcommand{\defbb}[1]{\expandafter\newcommand\csname b#1\endcsname{{\mathbb{#1}}}}
+%\newcommand{\defcal}[1]{\expandafter\newcommand\csname 
+%c#1\endcsname{{\mathcal{#1}}}}
+%\newcommand{\defbb}[1]{\expandafter\newcommand\csname 
+%b#1\endcsname{{\mathbb{#1}}}}
+%\newcounter{calBbCounter}
+%\forLoop{1}{26}{calBbCounter}{
+%	\edef\letter{\Alph{calBbCounter}}
+%	\expandafter\defcal\letter
+%	\expandafter\defbb\letter
+%}
+
+% Caligraphics and Board Letters
+\newcommand{\defcal}[1]{\expandafter\newcommand\csname 
+	c#1\endcsname{{\mathcal{#1}}}}
+\newcommand{\defbb}[1]{\expandafter\newcommand\csname 
+	b#1\endcsname{{\mathbb{#1}}}}
+\newcommand{\defbf}[1]{\expandafter\newcommand\csname 
+	bf#1\endcsname{{\mathbf{#1}}}}
 \newcounter{calBbCounter}
 \forLoop{1}{26}{calBbCounter}{
 	\edef\letter{\Alph{calBbCounter}}
 	\expandafter\defcal\letter
 	\expandafter\defbb\letter
+	\expandafter\defbf\letter
+}
+\forLoop{1}{26}{calBbCounter}{
+	\edef\letter{\alph{calBbCounter}}
+	% 	\expandafter\defcal\letter
+	% 	\expandafter\defbb\letter
+	\expandafter\defbf\letter
 }
 
 
@@ -166,10 +189,10 @@ coltitle=black,center title}}
 %
 \setlength{\paperwidth}{48in} %
 \setlength{\paperheight}{36in} %
-\setlength{\sepwid}{0.001\paperwidth} %
+\setlength{\sepwid}{0.01\paperwidth} %
 \setlength{\onecolwid}{0.32\paperwidth} %
 \setlength{\twocolwid}{0.464\paperwidth} %
-\setlength{\threecolwid}{0.708\paperwidth} %
+\setlength{\threecolwid}{0.32\paperwidth} %
 \setlength{\topmargin}{-0.9in} %
 %
 \usepackage{bm}
@@ -186,7 +209,8 @@ coltitle=black,center title}}
 	
 	\begin{frame}[t] %
 	\begin{columns}[t] %
-		%
+	\begin{column}{\sepwid}
+	\end{column}
 	\begin{column}{\onecolwid} %
 			\vspace{-40pt}
 				
@@ -303,7 +327,7 @@ coltitle=black,center title}}
 %			$.
 			
 		\item	\structure{\textbf{Squared Hellinger 
-		Distance}}
+		Distance (SHD)}}
 %	~\cite{daskalakis2017square}
 	 $ H^2(P,Q) = 
 		\frac{1}{2} \sum_{i\in \Omega} 
@@ -315,13 +339,14 @@ coltitle=black,center title}}
 %			$
 %			H^2(P,Q) = \frac{1}{2} \int_{\Omega} 
 %			(\sqrt{dP}-\sqrt{dQ})^2$.	
-		\item  \structure{\textbf{Triangular 
-		Discrimination}}
-%	~\citep{le2012asymptotic}
-		$\Delta(P\parallel Q) = \sum_{i\in 
-			\Omega} 
-		\frac{(P(i)-Q(i))^2}{P(i)+Q(i)}$ is the $ \delta $-divergence, where
-			 $ \delta(t) = \frac{(t-1)^2}{t+1} $.
+
+%		\item  \structure{\textbf{Triangular 
+%		Discrimination}}
+%%	~\citep{le2012asymptotic}
+%		$\Delta(P\parallel Q) = \sum_{i\in 
+%			\Omega} 
+%		\frac{(P(i)-Q(i))^2}{P(i)+Q(i)}$ is the $ \delta $-divergence, where
+%			 $ \delta(t) = \frac{(t-1)^2}{t+1} $.
 %			 (also known as Vincze-Le Cam 
 %			distance)
 %			 If the sample 
@@ -330,7 +355,7 @@ coltitle=black,center title}}
 %			given by 
 %			.
 			
-		\item \structure{\textbf{Jensen-Shannon (JS) Divergence}}
+		\item \structure{\textbf{Jensen-Shannon Divergence (JSD)}}
 			 is a symmetrized version 
 			of the 
 			KL divergence. If 
@@ -342,39 +367,15 @@ coltitle=black,center title}}
 			\end{equation}
 \end{itemize}
 	\end{block}
-	\begin{block}{3. Mutual Information Loss}
-		%		The mutual information loss arises naturally in many machine 
-		%learning 
-		%		tasks, 
-		%		such as information-theoretic 
-		%clustering~\citep{dhillon2003divisive} 
-		%		and 
-		%		categorical feature compression~\citep{bateni2019categorical}. 
-		
-		%	Suppose that two random variables $ X $ and $ C $ obeys a joint 
-		%	distribution $ p(X,C) $. 
+	\begin{block}{3. Mutual Information Loss (MIL)}
 		Let $ X\in \cX $ be the feature value of a data item, $ C\in \cC $ be 
 		its 
 		label, and the joint distribution $ p(X,C) $ model a 
 		dataset~\citep{bateni2019categorical}.
 		
-		%A labeled dataset can be modeled as a joint empirical distribution 
-		%$\pr(X, 
-		%C)$, where the random variable $X$ denotes the data item and $C$ 
-		%denotes 
-		%the label. 
-		%	Let $\mathcal{X}$ and $\mathcal{C}$ denote the support of $X$ and 
-		%$C$ (\ie, 
-		%	the 
-		%	universal set of all possible feature values and labels), 
-		%respectively. 
 		Consider clustering two feature values $ x,y $ into a new combined 
 		value $ 
 		z $:
-%		This 
-%		operation can be represented by the following map 
-		%\[\pi_{x,y}: \mathcal{X}\to \mathcal{X}\setminus\{x,y\}\cup \{z\}\]
-		%such that
 		\[ 
 		\pi_{x,y}: \mathcal{X}\to \mathcal{X}\setminus\{x,y\}\cup 
 		\{z\}\quad\text{s.t.}\quad \pi_{x,y}(t) = \begin{cases}
@@ -412,13 +413,12 @@ coltitle=black,center title}}
 \begin{column}{\onecolwid} %
 \vspace{-40pt}
 
-\begin{block}{Generalized JS Divergence}
-	\structure{\textbf{Generalized Jensen-Shannon divergence.}} If we let $P$ 
+\begin{block}{Generalized Jensen-Shannon Divergence (GJSD)}
+	 Let $P$ 
 	and 
 	$Q$ be the conditional distribution of $C$ given $X=x$ and $X=y$, 
-	respectively, 
-	such that $ P(c) = p(C=c| X=x) $ and $ Q(c)=p(C=c| X=y) $, the mutual 
-	information loss can be re-written as
+	i.e., $ P(c) = p(C=c| X=x) $ and $ Q(c)=p(C=c| X=y) $. The MIL can be 
+	re-written as
 	\begin{equation}\label{eq:mil}
 	\lambda \kl{P}{M_\lambda} + (1-\lambda) \kl{Q}{M_\lambda}\enspace,
 	\end{equation}
@@ -426,207 +426,238 @@ coltitle=black,center title}}
 	M_\lambda=\lambda P + (1-\lambda)Q $.
 	% is a convex combination of $ P $ and $ Q $.
 	%
-	Note that \eqref{eq:mil} is a generalized version of 
-	\eqref{eq:jensen-shannon}. 
+	\eqref{eq:mil} is a generalized version of 
+	\eqref{eq:jensen-shannon} with $ \lambda=1/2 $. 
 	Therefore, we define the 
 	%\emph{Mutual Information Loss (MIL) Divergence} (also known as the 
-	\emph{generalized Jensen-Shannon (GJS) 
-		divergence} between $P$ and 
-	$Q$~\citep{lin1991divergence,ali1966general,dhillon2003divisive}
+	GJSD
+%	~\citep{lin1991divergence,ali1966general,dhillon2003divisive}
+%	 between $P$ and 
+%	$Q$
 	by
 	$
 	\wjs{\lambda}{P}{Q} = \lambda \kl{P}{M_\lambda} + (1-\lambda) 
 	\kl{Q}{M_\lambda}$,
-	where $ \lambda\in [0,1] $ and $ M_\lambda=\lambda P + (1-\lambda)Q $. We 
-	immediately have $ \wjs{1/2}{P}{Q} = \js{P}{Q} $, which indicates that the 
-	JS divergence is indeed a special case of the GJS divergence when $ 
-	\lambda=1/2 $. The GJS
-	%generalized Jensen-Shannon
-	divergence has 
-	another equivalent definition
-	$
-	\wjs{\lambda}{P}{Q} = H(M_\lambda) - \lambda H(P) - 
-	(1-\lambda) H(Q)$,
-	where $H(\cdot)$ denotes the Shannon entropy~\cite{cover2012elements}. In 
+	where $ \lambda\in [0,1] $.
+%	 and $ M_\lambda=\lambda P + (1-\lambda)Q $.
+
+%	 The
+%	JS divergence is indeed a special case of the GJS divergence: $ 
+%	\wjs{1/2}{P}{Q} = \js{P}{Q} $.
+	
+%	The GJS
+%	%generalized Jensen-Shannon
+%	divergence has 
+%	another equivalent definition
+%	$
+%	\wjs{\lambda}{P}{Q} = H(M_\lambda) - \lambda H(P) - 
+%	(1-\lambda) H(Q)$,
+%	where $H(\cdot)$ denotes the Shannon entropy~\cite{cover2012elements}.
+	 In 
 	contrast to the MIL 
-	divergence, the GJS $ \wjs{\lambda}{\cdot}{\cdot} $ is not symmetric in 
-	general 
-	as the weight $ \lambda\in [0,1] $ is fixed and not necessarily equal to $ 
-	1/2 
-	$. 
-%	We will show in \cref{lem:wjs-as-f-divergence} that the GJS divergence 
-%	is an 
-%	$ f $-divergence.
+	divergence, the GJSD $ \wjs{\lambda}{\cdot}{\cdot} $ is not symmetric 
+	unless 
+	$ \lambda=1/2 $.
+
+The GJSD is  $ m_\lambda $-divergence, where $	
+m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 - 
+\lambda)\ln(\lambda t+1-\lambda)$ (\structure{\textbf{Lemma~1}}).
 \end{block}	
 \vspace{3pt}
 
 \begin{block}{4. Positive Definite Kernel and \kr Kernel}
-	\structure{\textbf{Positive definite kernel~\citep{scholkopf2001kernel}}}
-		Let $ \cX $ be a non-empty set. A symmetric, real-valued map $ 
-		k:\cX\times\cX\to \bR $ is a positive definite kernel on $ \cX $ if for 
+	\structure{\textbf{Positive definite (PD) 
+	kernel~\citep{scholkopf2001kernel}}}
+%		Let $ \cX $ be a non-empty set.
+		 A symmetric
+%		 , real-valued
+		  map $ 
+		k:\cX\times\cX\to \bR $ is a PD kernel on $ \cX $ if for 
 		all 
-		positive integer $ n $, real numbers $ a_1,\dots,a_n\in \bR $, and $ 
+%		positive integer $ n $,
+%		 real numbers
+		  $ a_1,\dots,a_n\in \bR $, and $ 
 		x,\dots,x_n\in \cX $, it holds that $
 		\sum_{i=1}^n \sum_{j=1}^n a_i a_j k(x_i,x_j) \ge 0$.
 	
-	A kernel is said to be a \emph{\kr} kernel if it can be represented as 
-	the difference of two positive definite kernels. 
+%	A kernel is said to be a \emph{\kr} kernel if it is  
+%	the difference of two PD kernels. 
 	
 	\structure{\textbf{\kr kernel~\citep{ong2004learning}}}
-		Let $ \cX $ be a non-empty set. A symmetric, real-valued map $ 
-		k:\cX\times\cX\to \bR $ is a \kr kernel on $ \cX $ if there exists two 
-		positive definite kernels $ k_1 $ and $ k_2 $ on $ \cX $ such that $ 
-		k(x,y)=k_1(x,y)-k_2(x,y) $ holds for all $ x,y\in \cX $.
+%		Let $ \cX $ be a non-empty set. 
+		A symmetric
+%		, real-valued
+		 map $ 
+		k:\cX\times\cX\to \bR $ is a \kr kernel on $ \cX $ if there exist 
+		PD kernels $ k_1 $ and $ k_2 $ s.t.\ $ 
+		k(x,y)=k_1(x,y)-k_2(x,y) $.
+%		 holds for all $ x,y\in \cX $.
 
 \end{block}
 
-
+\begin{block}{5. LSH Schemes for $ f $-Divergences}
+	We build LSH schemes for $ f $-divergences based on approximation via 
+	another $ 
+	f $-divergence if the latter admits an LSH family. 
+	%		If $ D_f $ and $ D_g 
+	%		$ are 
+	%		two divergences associated with convex functions $ f $ and $ g $ as 
+	%		defined by 
+	%		\eqref{eq:definition_f_divergence}, the approximation ratio of $ 
+	%		D_f(P\parallel Q) $ to $ D_g(P \parallel Q) $ is determined by the 
+	%		ratio of 
+	%		the functions $ f $ and $ g $, as well as the ratio of $ P $ to $ Q 
+	%$. 
+	%		(to 
+	%		be precise, $ \inf_{i\in \Omega} \frac{P(i)}{Q(i)} 
+	%		$)~\citep{sason2016f}.
+	
+	%We also present $ f $-divergences with a known LSH family in 
+	%\cref{tab:list_of_f_divergences}.
+	
+	% The $ \chi^2 $-divergence admits the $ \chi^2 
+	%$-LSH family~\citep{gorisse2012locality}. The total variation between 
+	%two 
+	%probability measures is identical to the $ L^1 $ distance between the 
+	%two 
+	%vectors $ [P(i)]_{i\in \Omega} $ and $ [Q(i)]_{i\in \Omega} $. 
+	
+	%The $ L^2 $-LSH 
+	% applies to  
+	%the triangular discrimination after a transform of taking the square 
+	%root.
+	
+	%\cref{thm:main} shows the guarantee of the LSH family build upon 
+	%approximation 
+	%via another $ f $-divergence.
+	
+	\structure{\textbf{Proposition 1}}
+	Let $ \beta_0\in (0,1),L,U>0 $ and let $ f $ and $ g $ be convex and s.t.\
+%	 two 
+%	convex 
+%	functions $ 
+%	(0,\infty)\to \mathbb{R} $ 
+%	that obey
+	 $ f(1)=0 $, $ g(1)=0 $, and $f(t), g(t)>0 $ for every $ 
+	t\ne 1 
+	$. 
+	Let $ \mathcal{P} $ be a set of probability measures
+	on 
+%	a  finite sample space
+	 $ \Omega $ s.t.\ for every $ i\in 
+	\Omega $ and $ 
+	P, Q\in \mathcal{P} $, $
+	0< \beta_0\le \frac{P(i)}{Q(i)} \le \beta_0^{-1}
+	$.
+	Assume that for every $ \beta\in 
+	(\beta_0, 1)\cup (1,\beta_0^{-1}) $, it holds that
+	$
+	0<L\le \frac{f(\beta)}{g(\beta)} \le U < \infty$.
+	%	 $ U=\sup_{\beta\in (\beta_0, 1)\cup (1,\beta_0^{-1})} 
+	%f(\beta)/g(\beta) $ 
+	%	 and $ L = \inf_{\beta\in (\beta_0, 1)\cup (1,\beta_0^{-1})} 
+	%	 f(\beta)/g(\beta) $ are both finite and non-zero
+	If $ \mathcal{H} $ forms 
+	an $ (r_1, r_2, p_1,p_2) $-sensitive family for $ 
+	g 
+	$-divergence on $ \mathcal{P} $, then it is also an  
+	$ (Lr_1, 
+	Ur_2, p_1,p_2)  
+	$-sensitive family for $ f $-divergence on $ \mathcal{P} $.
+	
+	
+	%		\cref{thm:main} provides a general strategy of constructing LSH 
+	%		families for $ 
+	%		f $-divergences. The performance of such LSH families depends on 
+	%the 
+	%		tightness 
+	%		of 
+	%		the approximation. 
+	%		In \cref{sub:weighted_js,sub:triangular_discrimination}, as 
+	%instances 
+	%		of the 
+	%		general strategy, we derive concrete 
+	%		results for the generalized Jensen-Shannon 
+	%		divergence and triangular discrimination, respectively.
+\end{block}
 
 \end{column} %
  		\begin{column}{\sepwid}\end{column} %
 		%
-\begin{column}{\onecolwid} %
+\begin{column}{\threecolwid} %
 	\vspace{-40pt}
 	
-	\begin{block}{5. LSH Schemes for $ f $-Divergences}
-		We build LSH schemes for $ f $-divergences based on approximation via 
-		another $ 
-		f $-divergence if the latter admits an LSH family. If $ D_f $ and $ D_g 
-		$ are 
-		two divergences associated with convex functions $ f $ and $ g $ as 
-		defined by 
-		\eqref{eq:definition_f_divergence}, the approximation ratio of $ 
-		D_f(P\parallel Q) $ to $ D_g(P \parallel Q) $ is determined by the 
-		ratio of 
-		the functions $ f $ and $ g $, as well as the ratio of $ P $ to $ Q $ 
-		(to 
-		be precise, $ \inf_{i\in \Omega} \frac{P(i)}{Q(i)} 
-		$)~\citep{sason2016f}.
+	\begin{block}{Generalized Jensen-Shannon 
+			Divergence}
+%		\structure{}\label{sub:weighted_js}
 		
-		%We also present $ f $-divergences with a known LSH family in 
-		%\cref{tab:list_of_f_divergences}.
+%		\structure{lemma}
+%			Define 
+%			%	\begin{equation*}
+%			$	m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 - 
+%			\lambda)\ln(\lambda t+1-\lambda)$.
+%			%	\end{equation*}
+%			For any $ \lambda\in[0,1] $, $ m_\lambda(t) $ is convex on $ 
+%			(0,\infty) $ 
+%			and $ m_\lambda(1)=0 $. Furthermore, $ m_\lambda $-divergence 
+%			yields the 
+%			GJS divergence with parameter $ \lambda $.
 		
-		% The $ \chi^2 $-divergence admits the $ \chi^2 
-		%$-LSH family~\citep{gorisse2012locality}. The total variation between 
-		%two 
-		%probability measures is identical to the $ L^1 $ distance between the 
-		%two 
-		%vectors $ [P(i)]_{i\in \Omega} $ and $ [Q(i)]_{i\in \Omega} $. 
+		We choose to approximate it via the SHD.
+%		, which 
+%		plays a central role in the construction of the hash family with 
+%		desired 
+%		properties.
+
+		\structure{\textbf{Theorem~1}}
+		%		\begin{theorem}[{Proof in 
+		%				\cref{app:approximation}}]\label{thm:approximation}
+		%			We assume that the sample space $ \Omega $ is finite.
+		%			 Let $ P $ and 
+		%			$ Q $ 
+		%			be two different distributions on $ \Omega $.
+		For every  $ 
+		t>0 $ 
+		and $ \lambda\in (0,1) $, we have
+		\begin{equation*}
+		%	\begin{split}
+		L(\lambda)H^2(P, Q)\le 	\wjs{\lambda}{P}{Q}
+		\le  U(\lambda)H^2(P, Q)\le 
+		H^2(P, 
+		Q) ,
+		%	\end{split}
+		\end{equation*}
+		where $ L(\lambda) = 2 \min\{ \eta(\lambda), 
+		\eta(1-\lambda) \} $, $ \eta(\lambda) = -\lambda \ln \lambda $ and 
+		$ 
+		U(\lambda) = 
+		\frac{2\lambda(1-\lambda)}{1-2\lambda}\ln \frac{1-\lambda}{\lambda} 
+		$.
+		%		\end{theorem}
 		
-		%The $ L^2 $-LSH 
-		% applies to  
-		%the triangular discrimination after a transform of taking the square 
-		%root.
-		
-		%\cref{thm:main} shows the guarantee of the LSH family build upon 
-		%approximation 
-		%via another $ f $-divergence.
-		
-		\structure{Proposition 1}[{Proof in \cref{app:main}}]\label{thm:main}
-			Let $ \beta_0\in (0,1),L,U>0 $ and let $ f $ and $ g $ be two 
-			convex 
-			functions $ 
-			(0,\infty)\to \mathbb{R} $ 
-			that obey $ f(1)=0 $, $ g(1)=0 $, and $f(t), g(t)>0 $ for every $ 
-			t\ne 1 
-			$. 
-			Let $ \mathcal{P} $ be a set of probability measures
-			on a  finite sample space $ \Omega $ such that for every $ i\in 
-			\Omega $ and $ 
-			P, Q\in \mathcal{P} $, $
-			0< \beta_0\le \frac{P(i)}{Q(i)} \le \beta_0^{-1}
-			$.
-			Assume that for every $ \beta\in 
-			(\beta_0, 1)\cup (1,\beta_0^{-1}) $, it holds that
-			$
-			0<L\le \frac{f(\beta)}{g(\beta)} \le U < \infty$.
-			%	 $ U=\sup_{\beta\in (\beta_0, 1)\cup (1,\beta_0^{-1})} 
-			%f(\beta)/g(\beta) $ 
-			%	 and $ L = \inf_{\beta\in (\beta_0, 1)\cup (1,\beta_0^{-1})} 
-			%	 f(\beta)/g(\beta) $ are both finite and non-zero
-			If $ \mathcal{H} $ forms 
-			an $ (r_1, r_2, p_1,p_2) $-sensitive family for $ 
-			g 
-			$-divergence on $ \mathcal{P} $, then it is also an  
-			$ (Lr_1, 
-			Ur_2, p_1,p_2)  
-			$-sensitive family for $ f $-divergence on $ \mathcal{P} $.
+%		The approximation guarantee is established in \cref{thm:approximation}. 
+%		We show 
+%		that the ratio of $ \wjs{\lambda}{P}{Q} $ to $ H^2(P,Q) $ is upper 
+%		bounded by the function $ U(\lambda) $ and lower bounded by the 
+%		function $ 
+%		L(\lambda) $. Furthermore, \cref{thm:approximation} shows that $ 
+%		U(\lambda)\le 
+%		1 $, which implies that the squared Hellinger distance is an upper 
+%		bound of the 
+%		GJS divergence.
 		
 		
-		\cref{thm:main} provides a general strategy of constructing LSH 
-		families for $ 
-		f $-divergences. The performance of such LSH families depends on the 
-		tightness 
-		of 
-		the approximation. 
-		In \cref{sub:weighted_js,sub:triangular_discrimination}, as instances 
-		of the 
-		general strategy, we derive concrete 
-		results for the generalized Jensen-Shannon 
-		divergence and triangular discrimination, respectively.
 		
-		\structure{Generalized Jensen-Shannon 
-		Divergence}\label{sub:weighted_js}
-		First, \cref{lem:wjs-as-f-divergence} shows that the GJS divergence is 
-		indeed 
-		an 
-		instance of $ f $-divergence.
-		\structure{lemma}
-			Define 
-			%	\begin{equation*}
-			$	m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 - 
-			\lambda)\ln(\lambda t+1-\lambda)$.
-			%	\end{equation*}
-			For any $ \lambda\in[0,1] $, $ m_\lambda(t) $ is convex on $ 
-			(0,\infty) $ 
-			and $ m_\lambda(1)=0 $. Furthermore, $ m_\lambda $-divergence 
-			yields the 
-			GJS divergence with parameter $ \lambda $.
+		Theorem~1 is based on the following two-sided approximation 
+		 between $ m_\lambda $ and $ \hel $. 
+		This result might be of 
+		independent interest.
+%		 for other machine learning tasks.
+%		, say, approximate 
+%		information-theoretic clustering~\cite{chaudhuri2008finding}.
 		
-		We choose to approximate it via the squared Hellinger distance, which 
-		plays a central role in the construction of the hash family with 
-		desired 
-		properties.
-		
-		The approximation guarantee is established in \cref{thm:approximation}. 
-		We show 
-		that the ratio of $ \wjs{\lambda}{P}{Q} $ to $ H^2(P,Q) $ is upper 
-		bounded by the function $ U(\lambda) $ and lower bounded by the 
-		function $ 
-		L(\lambda) $. Furthermore, \cref{thm:approximation} shows that $ 
-		U(\lambda)\le 
-		1 $, which implies that the squared Hellinger distance is an upper 
-		bound of the 
-		GJS divergence.
-		\begin{theorem}[{Proof in 
-				\cref{app:approximation}}]\label{thm:approximation}
-			We assume that the sample space $ \Omega $ is finite. Let $ P $ and 
-			$ Q $ 
-			be two different distributions on $ \Omega $.
-			For every  $ 
-			t>0 $ 
-			and $ \lambda\in (0,1) $, we have
-			\begin{equation*}
-			%	\begin{split}
-			L(\lambda)H^2(P, Q)\le 	\wjs{\lambda}{P}{Q}
-			\le  U(\lambda)H^2(P, Q)\le 
-			H^2(P, 
-			Q) ,
-			%	\end{split}
-			\end{equation*}
-			where $ L(\lambda) = 2 \min\{ \eta(\lambda), 
-			\eta(1-\lambda) \} $, $ \eta(\lambda) = -\lambda \ln \lambda $ and 
-			$ 
-			U(\lambda) = 
-			\frac{2\lambda(1-\lambda)}{1-2\lambda}\ln \frac{1-\lambda}{\lambda} 
-			$.
-		\end{theorem}
-		
-		We show \cref{thm:approximation} by showing a two-sided approximation 
-		result regarding $ m_\lambda $ and $ \hel $. This result might be of 
-		independent interest for other machine learning tasks, say, approximate 
-		information-theoretic clustering~\cite{chaudhuri2008finding}.
-		\begin{lemma}[Proof in \cref{app:bound}]\label{lem:bound}
+		\structure{\textbf{Lemma~2}}
+%		\begin{lemma}[Proof in \cref{app:bound}]\label{lem:bound}
 			Define $ \kappa_\lambda(t) = \frac{m_\lambda(t)}{\hel(t)} $. For 
 			every 
 			$ 
@@ -643,115 +674,427 @@ coltitle=black,center title}}
 			%	\begin{equation}\label{eq:kappa_bounds}
 			%	\kappa_\lambda(t) \in [L(\lambda), U(\lambda) ].
 			%	\end{equation}
-		\end{lemma}
+%		\end{lemma}
 		
-		We illustrate the upper and lower bound functions $ U(\lambda) $ and $ 
-		L(\lambda) $ in \cref{sec:illu-bounds}. Recall that if $ \lambda=1/2 $, 
-		the generalized Jensen-Shannon divergence reduces to the usual 
-		Jensen-Shannon 
-		divergence. \cref{thm:approximation} yields the approximation 
-		guarantee
-		$
-		0.69< \ln 2 \le \frac{\js{P}{Q}}{H^2(P, Q)} \le 1$.
+		We illustrate  $ U(\lambda) $ and $ 
+		L(\lambda) $ in \cref{sec:illu-bounds}. 
+%		Recall that if $ \lambda=1/2 $, 
+%		the generalized Jensen-Shannon divergence reduces to the usual 
+%		Jensen-Shannon 
+%		divergence. \cref{thm:approximation} yields the approximation 
+%		guarantee
+%		$
+%		0.69< \ln 2 \le \frac{\js{P}{Q}}{H^2(P, Q)} \le 1$.
 		
 		%\subsection{Hash Family Definition}\label{sub:hash_family}
 		
-		If the common sample space $ \Omega $ with which the 
-		two distributions $ P $ and $ Q $ are associated is finite, one can  
-		identify $ P $ and Q with the $ |\Omega| $-dimensional vectors 
+%		If the common sample space $ \Omega $ with which the 
+%		two distributions $ P $ and $ Q $ are associated is finite, 
+		We  
+		identify $ P $ and $Q$ with vectors 
+%		the $ |\Omega| $-dimensional vectors 
 		$[P(i)]_{i\in 
-			\Omega}$ and $ [Q(i)]_{i\in \Omega} $, respectively.
+			\Omega}, [Q(i)]_{i\in \Omega}\in \bR^{|\Omega|} $.
 		In this case, 
 		$
-		H^2(P, Q) = \frac{1}{2} \| \sqrt{P}-\sqrt{Q} \|_2^2$,
-		which is exactly half of the squared $ L^2 $ distance between the two 
-		vectors $ 
+		H^2(P, Q) = \frac{1}{2} \| \sqrt{P}-\sqrt{Q} \|_2^2$, where $ 
 		\sqrt{P} \triangleq [\sqrt{P(i)}]_{i\in \Omega} $ and $ \sqrt{Q} 
 		\triangleq 
-		[\sqrt{Q(i)}]_{i\in \Omega} $. Therefore, the squared Hellinger 
-		distance can be 
+		[\sqrt{Q(i)}]_{i\in \Omega} $.
+%		which is exactly half of the squared $ L^2 $ distance between the two 
+%		vectors $ 
+%		\sqrt{P} \triangleq [\sqrt{P(i)}]_{i\in \Omega} $ and $ \sqrt{Q} 
+%		\triangleq 
+%		[\sqrt{Q(i)}]_{i\in \Omega} $. 
+		Therefore, the SHD can be 
 		endowed with the $ L^2 $-LSH family~\citep{datar2004locality} applied 
 		to the 
-		square root of the vector. In light of this, 
-		the locality-sensitive hash function that we propose for the 
-		generalized Jensen-Shannon  divergence is 
+		square root of the vector. 
+		The LSH for the 
+		GJSD is 
 		\begin{equation}\label{eq:hash_function}
-		h_{\mathbf{a}, b}(P) = \left\lceil  \frac{\mathbf{a}\cdot \sqrt{P} +b 
+		h_{\mathbf{a}, b}(P) = \left\lceil  \frac{\mathbf{a}^\top \sqrt{P} +b 
 		}{r} 
 		\right\rceil,
 		\end{equation}
-		where $ \mathbf{a}\sim \mathcal{N}(0, I) $ is a $ |\Omega| 
-		$-dimensional standard normal random vector, $ 
-		\cdot $ denotes the inner product, 
-		$ b $ is uniformly at random on $ [0, r] $, and $ r $ is a positive 
-		real 
-		number. 
+		where $ \mathbf{a}\sim \mathcal{N}(0, I) $,
+%		 is a $ |\Omega| 
+%		$-dimensional standard normal random vector,
+%		 $ 
+%		\cdot $ denotes the inner product, 
+		$ b\sim \operatorname{Unif}[0, r] $,
+%		 is uniformly at random on $ [0, r] $,
+		  and $ r>0 $.
 		
-		\structure{theorem}[{Proof in 
-		\cref{sub:proof_wjs}}]\label{thm:lsh-family}
+		\structure{\textbf{Theorem~2}}
 			Let $ c= \| 
 			\sqrt{P}-\sqrt{Q} \|_2$ and $ f_2 $ be the probability density 
 			function of the 
-			absolute value of the standard normal distribution.	The hash 
+			absolute value of $ \cN(0,1) $.	The hash 
 			functions $ 
 			\{h_{\mathbf{a},b}\}  $ defined in \eqref{eq:hash_function} form a 
 			$ (R,c^2\frac{U(\lambda)}{L(\lambda)}R,p_1,p_2) 
 			$-sensitive 
 			family for the 
-			generalized Jensen-Shannon divergence with parameter $ \lambda $, 
+			GJSD,
+%			 with parameter $ \lambda $, 
 			where $ R>0 
 			$, $ p_1 = p(1) $, $ p_2=p(c) $, and $
 			p(u) = \int_0^r \frac{1}{u}f_2(t/u)(1-t/r)dt$.
 		
-		\structure{Triangular Discrimination}
-		Recall that  triangular discrimination is the $ \delta $-divergence, 
-		where $ 
-		\delta(t) = \frac{(t-1)^2}{t+1} $.
-		As shown in the proof of 
-		\cref{thm:lsh_family_triangular_discrimination} 
-		(\cref{sub:proof_triangular_discrimination}), 
-		the function $ \delta $ 
-		can be 
-		approximated by the function $ \hel(t) $ that defines the squared 
-		Hellinger 
-		distance
-		$
-		1\le	\frac{\delta(t)}{\hel(t)} \le 2$.
-		The squared Hellinger distance can be sketched via $ L^2 $-LSH after 
-		taking the 
-		square root, as exemplified in \cref{sub:weighted_js}.
-		By \cref{thm:main}, the LSH family for the square Hellinger distance 
-		also forms 
-		an LSH family for the triangular discrimination.
-		\cref{thm:lsh_family_triangular_discrimination} shows that the LSH 
-		family 
-		defined in  \eqref{eq:hash_function} form a 
-		$ (R,2c^2R,p_1,p_2) 
-		$-sensitive 
-		family for 
-		triangular discrimination.
-		
-		\structure{Theorem }
-			Let $ c= \| 
-			\sqrt{P}-\sqrt{Q} \|_2$ and $ f_2 $ be the probability density 
-			function of 
-			the 
-			absolute value of the standard normal distribution.	The hash 
-			functions $ 
-			\{h_{\mathbf{a},b}\}  $ defined in \eqref{eq:hash_function} form a 
-			$ (R,2c^2R,p_1,p_2) 
-			$-sensitive 
-			family for 
-			triangular discrimination, where $ R>0 
-			$, $ p_1 = p(1) $, $ p_2=p(c) $, and $
-			p(u) = \int_0^r \frac{1}{u}f_2(t/u)(1-t/r)dt$.
+%		\structure{Triangular Discrimination}
+%		Recall that  triangular discrimination is the $ \delta $-divergence, 
+%		where $ 
+%		\delta(t) = \frac{(t-1)^2}{t+1} $.
+%		As shown in the proof of 
+%		\cref{thm:lsh_family_triangular_discrimination} 
+%		(\cref{sub:proof_triangular_discrimination}), 
+%		the function $ \delta $ 
+%		can be 
+%		approximated by the function $ \hel(t) $ that defines the squared 
+%		Hellinger 
+%		distance
+%		$
+%		1\le	\frac{\delta(t)}{\hel(t)} \le 2$.
+%		The squared Hellinger distance can be sketched via $ L^2 $-LSH after 
+%		taking the 
+%		square root, as exemplified in \cref{sub:weighted_js}.
+%		By \cref{thm:main}, the LSH family for the square Hellinger distance 
+%		also forms 
+%		an LSH family for the triangular discrimination.
+%		\cref{thm:lsh_family_triangular_discrimination} shows that the LSH 
+%		family 
+%		defined in  \eqref{eq:hash_function} form a 
+%		$ (R,2c^2R,p_1,p_2) 
+%		$-sensitive 
+%		family for 
+%		triangular discrimination.
+%		
+%		\structure{Theorem }
+%			Let $ c= \| 
+%			\sqrt{P}-\sqrt{Q} \|_2$ and $ f_2 $ be the probability density 
+%			function of 
+%			the 
+%			absolute value of the standard normal distribution.	The hash 
+%			functions $ 
+%			\{h_{\mathbf{a},b}\}  $ defined in \eqref{eq:hash_function} form a 
+%			$ (R,2c^2R,p_1,p_2) 
+%			$-sensitive 
+%			family for 
+%			triangular discrimination, where $ R>0 
+%			$, $ p_1 = p(1) $, $ p_2=p(c) $, and $
+%			p(u) = \int_0^r \frac{1}{u}f_2(t/u)(1-t/r)dt$.
 		
 	\end{block}
 	
 
 	
-	\begin{block}{6. Bandit Submodular Set Maximization}
- 	
+	\begin{block}{\kr-LSH for Mutual Information Loss}
+ 		We first show that the MIL is a 
+ 		\kr 
+ 		kernel. 
+ 		%\lc{need to review what's \kr kernel in prelim}. 
+ 		Then
+ 		we propose \emph{\kr-LSH}, an asymmetric LSH 
+ 		method~\cite{shrivastava2014asymmetric} for MIL. 
+ 		It can be extended to other \kr kernels.
+% 		, 
+% 		provided that the associated positive definite kernels allow an 
+% 		explicit 
+% 		feature map. 
+ 		
+% 		\subsection{Mutual Information Loss is a \kr Kernel}
+ 		
+ 		Recall that we assume a joint distribution $ 
+ 		p(X,C) $.
+% 		whose support is $ \cX\times \cC $. 
+ 		Let $ x,y\in \cX $ be represented 
+ 		by 
+ 		$\bfx=[p(c,x):c\in \cC], \bfy=[p(c,y):c\in 
+ 		\cC]\in 
+ 		[0,1]^{|\cC|}$.
+ 		%  be two vectors, where 
+ 		%$ x $ and $ y $ are feature values and $ \cC $ denotes the set of all 
+ 		%possible 
+ 		%labels. The probability $ p(c,x) $ is the frequency of the data points 
+ 		%whose 
+ 		%feature value is $ x $ and whose label is $ c $.
+ 		We consider the MIL of merging $ x  $ and $ y $:
+ 		$ I(X;C)-I(\pi_{x,y}(X);C)$. 
+ 		
+ 		\structure{\textbf{Theorem~4}}
+% 			The mutual information loss
+ 			 $ \mil(\bfx,\bfy) $ is a \kr kernel on 
+ 			$ 
+ 			[0,1]^{|\cC|} $: $ \mil=K_1-K_2 $,
+% 			 $ \mil(\bfx,\bfy)=K_1(\bfx,\bfy)-K_2(\bfx,\bfy)  $, 
+ 			 where $ 
+ 			K_1(\bfx,\bfy) = k(\sum_{c\in \cC}p(c,x), \sum_{c\in \cC}p(c,y)) $ 
+ 			and
+ 			 $ 
+ 			K_2(\bfx,\bfy)=\sum_{c\in \cC} k(p(c,x),p(c,y)) $ are PD kernels, 
+ 			and
+ 			$
+ 			k(a,b) = a\ln\frac{a}{a+b}+b\ln\frac{b}{a+b}
+ 			$.
+
+ 		
+% 		To prove \cref{thm:krein_kernel} and
+ 		To construct explicit feature maps 
+ 		for $ K_1 $ and $ K_2 $, we need \structure{\textbf{Lemma~3}}.
+% 		 the following lemma.
+ 		
+ 		\structure{\textbf{Lemma~3}}
+ 			 $ k $ is a PD kernel on $ [0,1] $ and 
+ 			 endowed with the explicit feature map $ x\mapsto \Phi_w(x) $ 
+ 			s.t.\ 
+ 			$ k(x,y) =  \int_\bR \Phi_w(x)^* \Phi_w(y) dw $, 
+ 			where $
+ 			\Phi_w(x) \triangleq e^{-iw\ln(x)}\sqrt{x\frac{2\sech(\pi 
+ 			w)}{1+4w^2}}$ and $ \Phi_w(x)^* $ denotes the complex conjugate of 
+ 			$ \Phi_w(x) $.
+
+ 		
+ 		The map $ \Phi(x):w\mapsto \Phi_w(x) $ is called the \emph{feature map} 
+ 		of $ x 
+ 		$. 
+% 		The integral $ \int_\bR \Phi_w(x)^* \Phi_w(y) dw $ is also denoted 
+% 		by a 
+% 		Hermitian inner product $ \langle \Phi(x),\Phi(y)\rangle $.
+ 		
+ 		%We will show that both kernels $k_1$ and $k_2$ are positive definite 
+ 		%functions.
+ 		
+% 		\subsection{\kr-LSH for Mutual Information Loss}
+ 		
+% 		Now we are ready to present an asymmetric LSH 
+% 		scheme~\cite{shrivastava2014asymmetric} for mutual information 
+% 		loss. 
+% 		%We would like to remark that 
+% 		This method can be easily extended to other \kr kernels, provided that 
+% 		the 
+% 		associated positive definite kernels admit an explicit feature map.
+
+ 		We reduce the problem of designing the LSH for a \kr kernel to 
+ 		the problem of designing the LSH for maximum inner product search 
+(MIPS)~\citep{shrivastava2014asymmetric,neyshabur2015symmetric,yan2018norm}.
+ 		We call this general reduction \emph{\kr-LSH}.
+ 		
+% 		\subsubsection{Reduction to Maximum Inner Product Search}
+ 		
+% 		Our reduction is based on the following observation.
+ 		\structure{\textbf{Observation:}} Suppose that $ K $ 
+ 		is a 
+ 		\kr kernel on $ \cX $ s.t.\ $ K=K_1-K_2 $ where $ K_1 $ and $ K_2 $ 
+ 		are 
+ 		PD kernels. 
+ 		 Assume that $ K_1 $ and $ K_2$ 
+ 		admit 
+ 		feature maps $ \Phi_1 $ and $\Phi_2 $ such that $ K_1(x,y)=\langle 
+ 		\Psi_1(x),\Psi_1(y)\rangle $ and $ K_2(x,y)=\langle 
+ 		\Psi_2(x),\Psi_2(y)\rangle 
+ 		$. Then the \kr kernel $ K $ can also represented as an inner product 
+ 		\begin{equation}\label{eq:krein_inner_product}
+ 		K(x,y)=\langle \Phi_1(x)\oplus \Phi_2(x), \Phi_1(y)\oplus 
+ 		-\Phi_2(y)\rangle\enspace,
+ 		\end{equation}
+ 		where $ \oplus $ denotes the direct sum. If we define a pair of 
+ 		transforms $ 
+ 		T_1(x) \triangleq \Phi_1(x)\oplus \Phi_2(x)
+ 		$ and $ T_2(x)\triangleq \Phi_1(x)\oplus -\Phi_2(x)
+ 		$,
+ 		then we have $
+ 		K(x,y)=\langle T_1(x),T_2(y)\rangle
+ 		$.
+ 		We call this pair of transforms \emph{left and right \kr transforms}.
+% 		
+% 		\begin{algorithm}[tbh]
+% 			\caption{ \kr-LSH}\label{alg:krein-lsh}
+% 			\begin{algorithmic}[1]
+% 				\Require Discretization parameters $ J\in \mathbb{N} $ and $ 
+% 				\Delta>0 $.
+% 				\Ensure The left and right \kr transform $ \eta_1 $ and $ 
+% 				\eta_2 $.
+% 				\State $ w_j \gets (j-1/2)\Delta $ for $ j=1,\dots,J $
+% 				%\State Sample $w_1,\dots,w_L,w'_1,\dots,w'_{L'}$ i.i.d.\ from 
+% 				%the 
+% 				%distribution 
+% 				%with density \[\frac{\sech(\pi w)}{\ln(2)(1+4w^2)}\,.\]
+% 				\State Construct the atomic transform \[
+% 				\tau(x,w,j)\triangleq 
+% 				\left[\cos(w\ln(x))\sqrt{2x\int_{(j-1)\Delta}^{j\Delta} 
+% 					\rho(w')dw'},\sin(w\ln(x))\sqrt{ 
+% 					2x\int_{(j-1)\Delta}^{j\Delta} 
+% 					\rho(w')dw' }\right]
+% 				\enspace.
+% 				\]
+% 				\State Construct the left and right basic transform 
+% 				\begin{align*}
+% 				\eta_1(\bfx)\triangleq{} & \bigoplus_{j=1}^J 
+% 				\tau(p(x),w_j,j)\oplus 
+% 				\bigoplus_{j=1}^{J} \bigoplus_{c\in \cC} \tau(p(c,x),w_j,j)\,,\\
+% 				\eta_2(\bfx)\triangleq{} & \bigoplus_{j=1}^J 
+% 				\tau(p(x),w_j,j)\oplus 
+% 				\bigoplus_{j=1}^{J} \bigoplus_{c\in \cC} -\tau(p(c,x),w_j,j)\,.
+% 				%\eta_2(\bfy,\bfw,\bfw',L,L')\triangleq{} & \bigoplus_{j=1}^L 
+% 				%\tau(p(y),w_j,L)\oplus \bigoplus_{j=1}^{L'} \bigoplus_{c\in 
+% 				%\cC} 
+% 				%-\tau(p(c,y),w'_j,L')\,.
+% 				\end{align*}
+% 				%\State \Return $ \eta_1 $ and $ \eta_2 $
+% 				\State Construct the left and right \kr transform
+% 				\begin{equation*}
+% 				T_1(\bfx,M) \triangleq{} 
+% 				[\eta_1,\sqrt{M-\|\eta_1(\bfx)\|^2_2},0],\quad T_2(\bfy,M) 
+% 				\triangleq{} 
+% 				[\eta_2,0,\sqrt{M-\|\eta_2(\bfx)\|^2_2}]\,.
+% 				\end{equation*}
+% 				where $ M $ is a constant such that $ M\ge \|\eta_1(\bfx)\|_2^2 
+% 				$ (note 
+% 				that $ 
+% 				\|\eta_1(\bfx)\|_2 = \|\eta_2(\bfx)\|_2 $).
+% 				\State Sample $\bfa\sim \cN(0,I)$ and construct the hash 
+% 				function 
+% 				$ h(\bfx; M)\triangleq \sign(\bfa^\top T(\bfx, M))$,
+% 				where $T$ is either the left or right 
+% 				transform.\label{ln:simple-lsh}
+% 				%\State Rank the feature values $ \bfx $ in the vocabulary $ 
+% 				%\cM $ 
+% 				%according to 
+% 				%$ \|\eta_1(\bfx)\|_2 $.
+% 				%\State Partition the vocabulary of feature values $ \cM $ into 
+% 				%$ m $ 
+% 				%sub-vocabularies $ \{ \cM_1,\dots,\cM_m \} $ such that the 
+% 				%sub-vocabulary $ 
+% 				%\cM_i 
+% 				%$ contains the feature values whose $ \|\eta_1(\bfx)\|_2 $ are 
+% 				%ranked 
+% 				%in the 
+% 				%range $ [(i-1)\frac{|\cM|}{m},i\frac{|\cM|}{m}] $.
+% 				%\For{each sub-vocabulary $ \cM_i $}
+% 				%\State Build 
+% 				%\EndFor
+% 			\end{algorithmic}
+% 		\end{algorithm}
+% 		
+% 		We exemplify this technique by applying it to the MIL divergence.
+% 		For ease of exposition, we define $ \rho(w)\triangleq \frac{2\sech(\pi 
+% 			w)}{1+4w^2} $. The proposed approach \kr-LSH is presented in 
+% 		\cref{alg:krein-lsh}. 
+% 		To make the intuition of \eqref{eq:krein_inner_product} applicable in a 
+% 		practical implementation, we have
+% 		%The high-level idea is
+% 		to truncate and discretize the 
+% 		integral $ k(x,y) = \int_R \Phi_w(x)^* \Phi_w(y) 
+% 		dw  $. First we analyze the truncation. The analysis is similar to 
+% 		Lemma~10 of \citep{abdullah2016sketching}.
+% 		\begin{lemma}[Truncation error bound, proof in 
+% 		\cref{app:truncation}]\label{lem:truncation}
+% 			If $ t>0 $ and $ x,y\in [0,1] $, the truncation error can be 
+% 			bounded as 
+% 			follows $
+% 			\left| k(x,y) - \int_{-t}^{t} \Phi_w(x)^* \Phi_w(y)  dw \right|  
+% 			\le 
+% 			4e^{-t}$.
+% 		\end{lemma}
+% 		To discretize the finite integral $ \int_{-t}^{t} \Phi_w(x)^* 
+% 		\Phi_w(y)  dw $, we divide the inteval into $ 2J $ sub-intervals of 
+% 		length $ \Delta $. The following lemma bounds the discretization error.
+% 		\begin{lemma}[Discretization error bound, proof in 
+% 		\cref{app:discretization}]\label{lem:discretization}
+% 			If $ J $ is a positive integer, $ \Delta>0 $, and $ 
+% 			w_j=(j-1/2)\Delta $, 
+% 			the discretization error is bounded as follows $ 
+% 			\left| \int_{-\Delta J}^{\Delta J} \Phi_w(x)^* \Phi_w(y)  dw - 
+% 			\left\langle \bigoplus_{j=1}^J \tau(x,w_j,j), \bigoplus_{j=1}^J 
+% 			\tau(y,w_j,j)\right\rangle\right|
+% 			\le 2\Delta
+% 			$,
+% 			where $ \tau(x,w,j) = 
+% 			\left[\cos(w\ln(x))\sqrt{2x\int_{(j-1)\Delta}^{j\Delta} 
+% 				\rho(w')dw'},\sin(w\ln(x))\sqrt{ 2x\int_{(j-1)\Delta}^{j\Delta} 
+% 				\rho(w')dw' }\right]\in \bR^2 $.
+% 		\end{lemma}
+% 		
+% 		%Therefore, to guarantee that the error in truncation is at most $ 
+% 		%\epsilon $, 
+% 		%we require that $ \Delta J \ge \ln(4/\epsilon) $.
+% 		%The discretization error is given by 
+% 		%\begin{align*}
+% 		%&\left| \int_{-\Delta J}^{\Delta J} \Phi_w(x)^* \Phi_w(y)  dw - 
+% 		%\sum_{j=1}^{J} 
+% 		%2\sqrt{xy}\int_{(j-1)\Delta}^{j\Delta} 
+% 		%e^{iw_j\ln(x/y)}\rho(w)dw \right| \\
+% 		%\le{} & \sum_{j=1}^{J} 
+% 		%2\sqrt{xy}\int_{(j-1)\Delta}^{j\Delta} 
+% 		%\left|e^{iw\ln(x/y)}-e^{iw_j\ln(x/y)}\right|\rho(w)dw  
+% 		%\le{}  \sum_{j=1}^{J} 
+% 		%\sqrt{xy}\int_{(j-1)\Delta}^{j\Delta} 
+% 		% \Delta|\ln\frac{x}{y}| \rho(w)dw  \le \Delta\,.
+% 		%\end{align*}
+% 		%Therefore, if we set $ 
+% 		%J=\frac{1+|\cC|}{\epsilon}\ln\frac{4(1+|\cC|)}{\epsilon} 
+% 		%$ and $ \Delta = \frac{\epsilon}{1+|\cC|} $, the total approximation 
+% 		%loss is at 
+% 		%most $ \epsilon $.
+% 		
+% 		By \cref{lem:truncation,lem:discretization}, to guarantee that the 
+% 		total approximation error (including both truncation and discretization 
+% 		errors) is at most $ \epsilon $, it suffices to set $ \Delta = 
+% 		\frac{\epsilon}{4(1+|\cC|)} $ and $ J\ge 
+% 		\frac{4(1+|\cC|)}{\epsilon}\ln\frac{8(1+|\cC|)}{\epsilon} $.
+% 		
+%% 		\subsubsection{LSH for Maximum Inner Product Search}
+% 		
+% 		The second stage of our proposed method is to apply LSH to the MIPS 
+% 		problem. 
+% 		As an example,  
+% 		in \cref{ln:simple-lsh}, we use the \splsh introduced by 
+% 		\citep{neyshabur2015symmetric}. Let us have a quick review of \splsh. 
+% 		Assume 
+% 		that $ \cM\subseteq \bR^d $ is a finite set of vectors and that for all 
+% 		$ 
+% 		\bfx\in \cM $, there is a universal bound on the squared 2-norm, \ie, $ 
+% 		\|\bfx 
+% 		\|^2_2\le M $.  \citet{neyshabur2015symmetric} assume that $ M=1 $ 
+% 		without loss 
+% 		of generality. We allow $ M $ to be any positive real number. 
+% 		For two vectors $ \bfx,\bfy\in \cM $, \splsh performs the following 
+% 		transform $
+% 		L_1(\bfx) \triangleq{} 
+% 		[\bfx,\sqrt{M-\|\bfx\|^2_2},0], L_2(\bfy) \triangleq{} 
+% 		[\bfy,0,\sqrt{M-\|\bfy\|^2_2}]$.
+% 		Note that the norm of $ L_1 $ and $ L_2 $ is $ M $ and that therefore 
+% 		their cosine similarity equals their inner product. 
+% 		In fact, \splsh is a reduction from MIPS to LSH for the cosine 
+% 		similarity. Then a random-projection-based LSH for the cosine 
+% 		similarity~\citep{charikar2002similarity,wang2014hashing} \[ 
+% 		h(\bfx)\triangleq \sign(\bfx^\top L_i(\bfx)),\quad \bfa\sim \cN(0, I), 
+% 		i=1,2
+% 		\]
+% 		can be used for MIPS and thereby LSH for the MIL divergence via our 
+% 		reduction.
+% 		% By Theorem~4.2 of 
+% 		%\citep{neyshabur2015symmetric}, we know that \kr-LSH is a $ 
+% 		%(S,cS,p_1,p_2) 
+% 		%$-LSH for any $ 0<S<1 $ and $ 0<c<1 $.
+% 		
+% 		%Let $ K(\bfx,\bfy) = k_1(\bfx,\bfy)-k_2(\bfx,\bfy)$ be a \kr kernel, 
+% 		%where $ 
+% 		%k_1 $ and $ k_2 $ are two positive definite kernels.
+% 		
+%% 		\paragraph{Discussion}
+% 		We have some important remarks for practical implementation of \kr-LSH. 
+% 		Although \citep{neyshabur2015symmetric} provides a theoretical 
+% 		guarantee for 
+% 		LSH for MIPS, as noted in~\citep{yan2018norm}, the additional term $ 
+% 		\sqrt{M-\|\bfx\|_2^2} $ may dominate in the $ 2 $-norm and 
+% 		significantly 
+% 		degrade the performance of LSH. To circumvent this issue, we recommend 
+% 		a method 
+% 		that partitions the dataset according to the $ 2 $-norm, \eg, the 
+% 		norm-ranging 
+% 		method~\citep{yan2018norm}.
 	\end{block}
 	
 	\begin{block}{7. References}
