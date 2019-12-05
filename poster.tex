@@ -265,7 +265,7 @@ coltitle=black,center title}}
 \begin{itemize}	
 		\item	\structure{\textbf{$ f 
 		$-divergence}}  from $ P $ 
-		to $ Q $~\cite{csiszar1964informationstheoretische} is defined by 
+		to $ Q $~\cite{csiszar1964informationstheoretische}  
 %			If $ P\ll Q $, 
 			is defined by
 			\begin{equation}\label{eq:definition_f_divergence}
@@ -273,10 +273,11 @@ coltitle=black,center title}}
 			\frac{P(i)}{Q(i)} 
 			\right) \,,
 			\end{equation}
-			where $ f:(0,\infty)\to 
-			\mathbb{R} $ be convex s.t.\ 
-			$ f(1)=0 
-			$. 
+			where $ f $ is convex and $ f(1)=0 $.
+%			 $ f:(0,\infty)\to 
+%			\mathbb{R} $ be convex s.t.\ 
+%			$ f(1)=0 
+%			$. 
 %			provided that the right-hand side exists,
 %			where $ \frac{d P}{d Q} $ is the Radon-Nikodym derivative of $ P $ 
 %			with 
@@ -285,104 +286,134 @@ coltitle=black,center title}}
 			Q)\ne 
 			D_f(Q\parallel P) $.
 			
-			\item \structure{\textbf{KL-Divergence}} $ \kl{P}{Q} $ is the $ 
+			\item \structure{\textbf{KL-Divergence}} $ \kl{P}{Q}= \sum_{i\in 
+			\Omega} P(i) \ln\frac{P(i)}{Q(i)}  $ is the $ 
 			f_{\mathrm{KL}} 
-			$-divergence~\cite{cover2012elements}, where
+			$-divergence,
+%			~\cite{cover2012elements}
+			where
 			 $ f_{\mathrm{KL}}(t) = t\ln t + (1-t) $.
 			%If $ P\ll Q $, the \emph{Kullback-Leibler (KL) divergence} from $ 
 			%P $ to $ Q $ 
 			%is 
 			%defined by 
-			We have
-			$
-			\kl{P}{Q} = \sum_{i\in \Omega} P(i) \ln\frac{P(i)}{Q(i)} 
-			$.
+%			We have
+%			$
+%			\kl{P}{Q} = \sum_{i\in \Omega} P(i) \ln\frac{P(i)}{Q(i)} 
+%			$.
 			
-		\item	\structure{\textbf{Squared Hellinger Distance}} $ H^2(P,Q) $ is 
+		\item	\structure{\textbf{Squared Hellinger 
+		Distance}}
+%	~\cite{daskalakis2017square}
+	 $ H^2(P,Q) = 
+		\frac{1}{2} \sum_{i\in \Omega} 
+		(\sqrt{P(i)}-\sqrt{Q(i)})^2 $ is 
 		the $ \hel 
-		$-divergence~\cite{daskalakis2017square}, where
+		$-divergence, where
 			 $ \hel(t)=\frac{1}{2}(\sqrt{t}-1)^2 $.
-			 We have
-			$
-			H^2(P,Q) = \frac{1}{2} \int_{\Omega} 
-			(\sqrt{dP}-\sqrt{dQ})^2$.	
-		\item  \structure{\textbf{Triangular Discrimination:}}
-			If $ \delta(t) = \frac{(t-1)^2}{t+1} $, the $ \delta $-divergence 
-			is the 
-			\emph{triangular discrimination} (also known as Vincze-Le Cam 
-			distance)~\citep{le2012asymptotic,vincze1981concept}. If the sample 
-			space is 
-			finite, the triangular discrimination between $ P $ and $ Q $ is 
-			given by 
-			$\Delta(P\parallel Q) = \sum_{i\in \Omega} 
-			\frac{(P(i)-Q(i))^2}{P(i)+Q(i)}$.
+%			 We have
+%			$
+%			H^2(P,Q) = \frac{1}{2} \int_{\Omega} 
+%			(\sqrt{dP}-\sqrt{dQ})^2$.	
+		\item  \structure{\textbf{Triangular 
+		Discrimination}}
+%	~\citep{le2012asymptotic}
+		$\Delta(P\parallel Q) = \sum_{i\in 
+			\Omega} 
+		\frac{(P(i)-Q(i))^2}{P(i)+Q(i)}$ is the $ \delta $-divergence, where
+			 $ \delta(t) = \frac{(t-1)^2}{t+1} $.
+%			 (also known as Vincze-Le Cam 
+%			distance)
+%			 If the sample 
+%			space is 
+%			finite, the triangular discrimination between $ P $ and $ Q $ is 
+%			given by 
+%			.
 			
 		\item \structure{\textbf{Jensen-Shannon (JS) Divergence}}
 			 is a symmetrized version 
 			of the 
-			KL divergence. If $ P\ll Q $, $ Q\ll P $ and $ M=(P+Q)/2 $, it 
+			KL divergence. If 
+%			$ P\ll Q $, $ Q\ll P $ and
+			 $ M=(P+Q)/2 $, it 
 			is defined by
 			\begin{equation}\label{eq:jensen-shannon}
 			\js{P}{Q} = \frac{1}{2} \kl{P}{M} + \frac{1}{2} \kl{Q}{M}\enspace.
 			\end{equation}
 \end{itemize}
 	\end{block}
-			
+	\begin{block}{3. Mutual Information Loss}
+		%		The mutual information loss arises naturally in many machine 
+		%learning 
+		%		tasks, 
+		%		such as information-theoretic 
+		%clustering~\citep{dhillon2003divisive} 
+		%		and 
+		%		categorical feature compression~\citep{bateni2019categorical}. 
+		
+		%	Suppose that two random variables $ X $ and $ C $ obeys a joint 
+		%	distribution $ p(X,C) $. 
+		Let $ X\in \cX $ be the feature value of a data item, $ C\in \cC $ be 
+		its 
+		label, and the joint distribution $ p(X,C) $ model a 
+		dataset~\citep{bateni2019categorical}.
+		
+		%A labeled dataset can be modeled as a joint empirical distribution 
+		%$\pr(X, 
+		%C)$, where the random variable $X$ denotes the data item and $C$ 
+		%denotes 
+		%the label. 
+		%	Let $\mathcal{X}$ and $\mathcal{C}$ denote the support of $X$ and 
+		%$C$ (\ie, 
+		%	the 
+		%	universal set of all possible feature values and labels), 
+		%respectively. 
+		Consider clustering two feature values $ x,y $ into a new combined 
+		value $ 
+		z $:
+%		This 
+%		operation can be represented by the following map 
+		%\[\pi_{x,y}: \mathcal{X}\to \mathcal{X}\setminus\{x,y\}\cup \{z\}\]
+		%such that
+		\[ 
+		\pi_{x,y}: \mathcal{X}\to \mathcal{X}\setminus\{x,y\}\cup 
+		\{z\}\quad\text{s.t.}\quad \pi_{x,y}(t) = \begin{cases}
+		t, & t\in \cX\setminus \{x, y\}\,,\\
+		z, & t = x,y\,.
+		\end{cases}
+		\]
+		%	where $x$ and $y$ are the two feature values to be clustered and 
+		%$z\notin 
+		%	\cX$ 
+		%	is the new combined feature value.
+		To make the dataset after clustering
+		%	 applying the 
+		%	map 
+		%	$\pi_{x,y}$ 
+		preserve as much information of the original dataset as 
+		possible, 
+		%	one has to select two feature values $x$ and $y$ such that
+		we want to minimize
+		the mutual 
+		information loss 
+%		incurred by the clustering operation
+		\[\mil(x,y) = I(X;C) - I(\pi_{x,y}(X);C)\,,\]
+		%	is minimized,
+		where $I(\cdot;\cdot)$ is the mutual 
+		information~\cite{cover2012elements}.
+		%	 between two random 
+		%	variables~\cite{cover2012elements}. 
+		$ \mil(x,y)=\mil(y,x)\ge 0 $ due to the data processing 
+		inequality~\cite{cover2012elements}.
+	\end{block}
 		\end{column} %
  		\begin{column}{\sepwid}\end{column} %
 		%
 \begin{column}{\onecolwid} %
 \vspace{-40pt}
 
-\begin{block}{3. Mutual Information Loss and Generalized JS 
-		Divergence}
-%		The mutual information loss arises naturally in many machine learning 
-%		tasks, 
-%		such as information-theoretic clustering~\citep{dhillon2003divisive} 
-%		and 
-%		categorical feature compression~\citep{bateni2019categorical}. 
-	
-	Suppose that two random variables $ X $ and $ C $ obeys a joint 
-	distribution $ p(X,C) $. This joint distribution can model a dataset where 
-	$ X $ denotes the feature value of a data point and $ C $ denotes its 
-	label~\citep{bateni2019categorical}.
-	%A labeled dataset can be modeled as a joint empirical distribution $\pr(X, 
-	%C)$, where the random variable $X$ denotes the data item and $C$ denotes 
-	%the label. 
-	Let $\mathcal{X}$ and $\mathcal{C}$ denote the support of $X$ and $C$ (\ie, 
-	the 
-	universal set of all possible feature values and labels), respectively. 
-	Consider clustering two feature values into a new combined value. This 
-	operation can be represented by the following map 
-	%\[\pi_{x,y}: \mathcal{X}\to \mathcal{X}\setminus\{x,y\}\cup \{z\}\]
-	%such that
-	\[ 
-	\pi_{x,y}: \mathcal{X}\to \mathcal{X}\setminus\{x,y\}\cup 
-	\{z\}\quad\text{such that}\quad \pi_{x,y}(t) = \begin{cases}
-	t, & t\in \cX\setminus \{x, y\}\enspace,\\
-	z, & t = x,y\enspace,
-	\end{cases}
-	\]
-	where $x$ and $y$ are the two feature values to be clustered and $z\notin 
-	\cX$ 
-	is the new combined feature value. To make the dataset after applying the 
-	map 
-	$\pi_{x,y}$ preserve as much information of the original dataset as 
-	possible, 
-	one has to select two feature values $x$ and $y$ such that the mutual 
-	information loss incurred by the clustering operation
-	$
-	\mil(x,y) = I(X;C) - I(\pi_{x,y}(X);C)
-	$
-	is minimized,
-	where $I(\cdot;\cdot)$ is the mutual information between two random 
-	variables~\cite{cover2012elements}. 
-	Note that the \emph{mutual information loss (MIL) divergence} $ 
-	\mil:\cX\times\cX\to\bR $ is symmetric in both arguments and always 
-	non-negative due to the data processing 
-	inequality~\citep{cover2012elements}.
-	
-	Next, we motivate the generalized Jensen-Shannon divergence. If we let $P$ 
+\begin{block}{Generalized JS Divergence}
+	\structure{\textbf{Generalized Jensen-Shannon divergence.}} If we let $P$ 
 	and 
 	$Q$ be the conditional distribution of $C$ given $X=x$ and $X=y$, 
 	respectively, 
