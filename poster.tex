@@ -157,7 +157,7 @@ coltitle=black,center title}}
 \newcommand{\BCSM}{\texttt{BCSM}\xspace}
 \newcommand{\RBSM}{\texttt{RBSM}\xspace}
 \newcommand{\BSM}{\texttt{BSM}\xspace}
-\newcommand{\splsh}{\texttt{Simple-LSH}\xspace}
+\newcommand{\splsh}{\textsf{Simple-LSH}\xspace}
 
 
 %
@@ -420,7 +420,7 @@ coltitle=black,center title}}
 \begin{column}{\onecolwid} %
 \vspace{-40pt}
 
-\begin{block}{Generalized Jensen-Shannon Divergence (GJSD)}
+\begin{block}{4. Generalized Jensen-Shannon Divergence (GJSD)}
 	 Let $P$ 
 	and 
 	$Q$ be the conditional distribution of $C$ s.t.\
@@ -474,7 +474,7 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 \end{block}	
 \vspace{3pt}
 
-\begin{block}{4. Positive Definite Kernel and \kr Kernel}
+\begin{block}{5. Positive Definite Kernel and \kr Kernel}
 	\structure{\textbf{Positive definite (PD) 
 	kernel.
 % 	~\citep{scholkopf2001kernel}
@@ -498,9 +498,10 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 % 	~\citep{ong2004learning}
 	}}
 %		Let $ \cX $ be a non-empty set. 
-		A symmetric
-%		, real-valued
-		 map $ 
+% 		A symmetric
+% %		, real-valued
+% 		 map
+		 $ 
 		k:\cX\times\cX\to \bR $ is a \kr kernel on $ \cX $ if there exist 
 		PD kernels $ k_1 $ and $ k_2 $ s.t.\ $ 
 		k(x,y)=k_1(x,y)-k_2(x,y) $.
@@ -508,7 +509,7 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 
 \end{block}
 
-\begin{block}{5. LSH Schemes for $ f $-Divergences}
+\begin{block}{6. LSH Schemes for $ f $-Divergences}
 	We build LSH schemes for $ f $-divergences based on approximation via 
 	another $ 
 	f $-divergence if the latter admits an LSH family. 
@@ -594,7 +595,8 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 	%		divergence and triangular discrimination, respectively.
 \end{block}
 
-\begin{block}{7. References}
+\begin{block}{References}
+\small
 		\bibliographystyle{plainnat}
 		\bibliography{reference-list}
 	\end{block}
@@ -604,8 +606,8 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 \begin{column}{\threecolwid} %
 	\vspace{-40pt}
 	
-	\begin{block}{Generalized Jensen-Shannon 
-			Divergence}
+	\begin{block}{7. Example: LSH for Generalized Jensen-Shannon 
+			Divergence via Hellinger Approximation}
 %		\structure{}\label{sub:weighted_js}
 		
 %		\structure{lemma}
@@ -620,7 +622,7 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 %			yields the 
 %			GJS divergence with parameter $ \lambda $.
 		
-		We choose to approximate it via the SHD.
+		We choose to approximate GJSD via the SHD.
 %		, which 
 %		plays a central role in the construction of the hash family with 
 %		desired 
@@ -809,7 +811,7 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 %			p(u) = \int_0^r \frac{1}{u}f_2(t/u)(1-t/r)dt$.
 		
 	\end{block}
-	\begin{block}{MIL is a \kr Kernel}
+	\begin{block}{8. MIL is a \kr Kernel}
 %  		We first show that the MIL is a 
 %  		\kr 
 %  		kernel. 
@@ -902,7 +904,7 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 \begin{column}{\onecolwid}
 \vspace{-40pt}
     
-\begin{block}{Intuition of \kr-LSH: Reduction to Maximum Inner Product Search (MIPS)}
+\begin{block}{9. Intuition of \kr-LSH: Reduction to Maximum Inner Product Search (MIPS)}
  		We reduce the problem of designing the LSH for a \kr kernel to 
  		the problem of designing the LSH for MIPS~\citep{shrivastava2014asymmetric}.
 %  		based on the following intuition.
@@ -911,7 +913,7 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 % 		\subsubsection{Reduction to Maximum Inner Product Search}
  		
 % 		Our reduction is based on the following observation.
- 		\structure{\textbf{Intuition:}} If 
+ 		\structure{\textbf{Reduction to MIPS:}} If 
 %  		PD kernels $ K_1 $ and $ K_2$ satisfy
 %  		admit 
 %  		feature maps $ \Phi_1 $ and $\Phi_2 $ s.t.\
@@ -930,14 +932,56 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
  		% 		We define $ \rho(w)\triangleq \frac{2\sech(\pi 
 % 			w)}{1+4w^2} $. The proposed approach \kr-LSH is presented in 
 % 		\cref{alg:krein-lsh}. 
-		To make the intuition 
-% 		of \eqref{eq:krein_inner_product}
-		applicable in a 
-		practical implementation, we have
-		%The high-level idea is
-		to truncate and discretize the 
-		integral $ k(x,y) = \int_R \Phi_w(x)^* \Phi_w(y) 
-		dw  $. 
+
+		\structure{\textbf{Apply LSH to MIPS}}
+		As an example,  
+% 		in \cref{ln:simple-lsh},
+		we use the \splsh 
+% 		introduced by 
+		\citep{neyshabur2015symmetric}. 
+% 		Let us have a quick review of \splsh. 
+		Assume 
+% 		that $ \cM\subseteq \bR^d $ is a finite set and 
+        that 
+		for all 
+		$ 
+		\bfx\in \cM $, 
+% 		there is a universal bound on the squared 2-norm, \ie, 
+		$ 
+		\|\bfx 
+		\|^2_2\le M $.  
+% 		\citet{neyshabur2015symmetric} assume that $ M=1 $ 
+% 		without loss 
+% 		of generality. We allow $ M $ to be any positive real number. 
+		For $ \bfx,\bfy\in \cM $, \splsh performs the following 
+		transform \[
+		L_1(\bfx) \triangleq{} 
+		[\bfx,\sqrt{M-\|\bfx\|^2_2},0], L_2(\bfy) \triangleq{} 
+		[\bfy,0,\sqrt{M-\|\bfy\|^2_2}]\,.\]
+		Since 
+		$\|L_1\|_2 = \|L_2\|_2 = M$,
+% 		the norm of $ L_1 $ and $ L_2 $ is $ M $ and that therefore 
+		their cosine similarity equals their inner product. 
+		In fact, \splsh is a reduction from MIPS to LSH for the cosine 
+		similarity. An 
+% 		random-projection-based 
+		LSH for the cosine 
+		similarity~\citep{charikar2002similarity} \[ 
+		h(\bfx)\triangleq \sign(\bfx^\top L_i(\bfx)),\quad \bfa\sim \cN(0, I), 
+		i=1,2
+		\]
+		can be used for MIPS and thereby LSH for the MIL  via our 
+		reduction.
+		% By Theorem~4.2 of 
+		%\citep{neyshabur2015symmetric}, we know that \kr-LSH is a $ 
+		%(S,cS,p_1,p_2) 
+		%$-LSH for any $ 0<S<1 $ and $ 0<c<1 $.
+		
+		%Let $ K(\bfx,\bfy) = k_1(\bfx,\bfy)-k_2(\bfx,\bfy)$ be a \kr kernel, 
+		%where $ 
+		%k_1 $ and $ k_2 $ are two positive definite kernels.
+
+		 
 % 		First we analyze the truncation. The analysis is similar to 
 % 		Lemma~10 of \citep{abdullah2016sketching}.
 %  		If we define  $ 
@@ -1013,42 +1057,7 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 		
 % % 		\subsubsection{LSH for Maximum Inner Product Search}
 		
-% 		The second stage of our proposed method is to apply LSH to the MIPS 
-% 		problem. 
-% 		As an example,  
-% 		in \cref{ln:simple-lsh}, we use the \splsh introduced by 
-% 		\citep{neyshabur2015symmetric}. Let us have a quick review of \splsh. 
-% 		Assume 
-% 		that $ \cM\subseteq \bR^d $ is a finite set of vectors and that for all 
-% 		$ 
-% 		\bfx\in \cM $, there is a universal bound on the squared 2-norm, \ie, $ 
-% 		\|\bfx 
-% 		\|^2_2\le M $.  \citet{neyshabur2015symmetric} assume that $ M=1 $ 
-% 		without loss 
-% 		of generality. We allow $ M $ to be any positive real number. 
-% 		For two vectors $ \bfx,\bfy\in \cM $, \splsh performs the following 
-% 		transform $
-% 		L_1(\bfx) \triangleq{} 
-% 		[\bfx,\sqrt{M-\|\bfx\|^2_2},0], L_2(\bfy) \triangleq{} 
-% 		[\bfy,0,\sqrt{M-\|\bfy\|^2_2}]$.
-% 		Note that the norm of $ L_1 $ and $ L_2 $ is $ M $ and that therefore 
-% 		their cosine similarity equals their inner product. 
-% 		In fact, \splsh is a reduction from MIPS to LSH for the cosine 
-% 		similarity. Then a random-projection-based LSH for the cosine 
-% 		similarity~\citep{charikar2002similarity,wang2014hashing} \[ 
-% 		h(\bfx)\triangleq \sign(\bfx^\top L_i(\bfx)),\quad \bfa\sim \cN(0, I), 
-% 		i=1,2
-% 		\]
-% 		can be used for MIPS and thereby LSH for the MIL divergence via our 
-% 		reduction.
-% 		% By Theorem~4.2 of 
-% 		%\citep{neyshabur2015symmetric}, we know that \kr-LSH is a $ 
-% 		%(S,cS,p_1,p_2) 
-% 		%$-LSH for any $ 0<S<1 $ and $ 0<c<1 $.
-		
-% 		%Let $ K(\bfx,\bfy) = k_1(\bfx,\bfy)-k_2(\bfx,\bfy)$ be a \kr kernel, 
-% 		%where $ 
-% 		%k_1 $ and $ k_2 $ are two positive definite kernels.
+
 		
 % % 		\paragraph{Discussion}
 % 		We have some important remarks for practical implementation of \kr-LSH. 
@@ -1063,7 +1072,14 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 % 		norm-ranging 
 % 		method~\citep{yan2018norm}.
 	\end{block}
-	\begin{block}{Algorithm \kr-LSH}
+	\begin{block}{10. Algorithm: \kr-LSH}
+	To make the above intuition 
+% 		of \eqref{eq:krein_inner_product}
+		practical, we have
+		%The high-level idea is
+		to truncate and discretize the 
+		integral $ k(x,y) = \int_R \Phi_w(x)^* \Phi_w(y) 
+		dw  $.
 			\begin{algorithmic}[1]
 				\Require Discretization parameters $ J\in \mathbb{N} $ and $ 
 				\Delta>0 $.
@@ -1104,10 +1120,11 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 				\triangleq{} &
 				[\eta_2,0,\sqrt{M-\|\eta_2(\bfx)\|^2_2}]\,.
 				\end{align*}
-				where $ M $ is a constant such that $ M\ge \|\eta_1(\bfx)\|_2^2 
-				$ (note 
-				that $ 
-				\|\eta_1(\bfx)\|_2 = \|\eta_2(\bfx)\|_2 $).
+				where $ M $ is a constant s.t.\ $ M\ge \|\eta_1(\bfx)\|_2^2 = \|\eta_2(\bfx)\|_2
+				$.
+				% (note 
+				% that $ 
+				% \|\eta_1(\bfx)\|_2 = \|\eta_2(\bfx)\|_2 $).
 				\State Sample $\bfa\sim \cN(0,I)$ and construct the hash 
 				function 
 				$ h(\bfx; M)\triangleq \sign(\bfa^\top T(\bfx, M))$,
@@ -1133,7 +1150,9 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 % 		\end{algorithm}
         \end{block}
 \end{column}
+ \begin{column}{\sepwid}
  
+ \end{column}
 		
 	\end{columns} %
 	
