@@ -205,6 +205,9 @@ coltitle=black,center title}}
 \usepackage{graphicx}  %
 \usepackage{booktabs} %
 \usepackage{rotating}
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
 \begin{document}
 	
 	%
@@ -221,9 +224,9 @@ coltitle=black,center title}}
 			\vspace{-40pt}
 				
 			\begin{block}{1. Locality-Sensitive Hashing (LSH)}	
-				$ \mathcal{M} $: the universal set of items (the 
+				$ \mathcal{M} $: the set of items (the 
 				database), endowed with 
-				a distance function $ D $.	
+				a distance $ D $.	
 				
 				\structure{\textbf{Intuition of LSH:}} 
 				For any $ p $ and $ q $ in $ \mathcal{M} $,
@@ -244,7 +247,7 @@ coltitle=black,center title}}
 				%	(potentially infinite) 
 				family of hash functions, where $ U $ is the set of possible 
 				hash values. 
-				Assume that there is a distribution $ h\sim 
+				Assume a distribution $ h\sim 
 				\mathcal{H} $ over the family of 
 				functions. This family $ \mathcal{H} $ is called $ (r_1, r_2, 
 				p_1,p_2) 
@@ -313,12 +316,13 @@ coltitle=black,center title}}
 %			where $ \frac{d P}{d Q} $ is the Radon-Nikodym derivative of $ P $ 
 %			with 
 %			respect to $ Q $.
-			It is not symmetric in general: $ D_f(P\parallel 
+In general
+			$ D_f(P\parallel 
 			Q)\ne 
 			D_f(Q\parallel P) $.
 			
-			\item \structure{\textbf{KL-Divergence}} $ \kl{P}{Q}= \sum_{i\in 
-			\Omega} P(i) \ln\frac{P(i)}{Q(i)}  $ is the $ 
+			\item \structure{\textbf{KL-Divergence}} \[ \kl{P}{Q}= \sum_{i\in 
+			\Omega} P(i) \ln\frac{P(i)}{Q(i)}  \] is the $ 
 			f_{\mathrm{KL}} 
 			$-divergence,
 %			~\cite{cover2012elements}
@@ -336,9 +340,9 @@ coltitle=black,center title}}
 		\item	\structure{\textbf{Squared Hellinger 
 		Distance (SHD)}}
 %	~\cite{daskalakis2017square}
-	 $ H^2(P,Q) = 
+	 \[ H^2(P,Q) = 
 		\frac{1}{2} \sum_{i\in \Omega} 
-		(\sqrt{P(i)}-\sqrt{Q(i)})^2 $ is 
+		(\sqrt{P(i)}-\sqrt{Q(i)})^2 \] is 
 		the $ \hel 
 		$-divergence, where
 			 $ \hel(t)=\frac{1}{2}(\sqrt{t}-1)^2 $.
@@ -385,7 +389,7 @@ coltitle=black,center title}}
 		z $:
 		\[ 
 		\pi_{x,y}: \mathcal{X}\to \mathcal{X}\setminus\{x,y\}\cup 
-		\{z\}\quad\text{s.t.}\quad \pi_{x,y}(t) = \begin{cases}
+		\{z\}\;\text{s.t.}\; \pi_{x,y}(t) = \begin{cases}
 		t, & t\in \cX\setminus \{x, y\}\,,\\
 		z, & t = x,y\,.
 		\end{cases}
@@ -402,7 +406,7 @@ coltitle=black,center title}}
 		possible, 
 		%	one has to select two feature values $x$ and $y$ such that
 		we want to minimize
-		the mutual 
+		 mutual 
 		information loss 
 %		incurred by the clustering operation
 		\[\mil(x,y) = I(X;C) - I(\pi_{x,y}(X);C)\,,\]
@@ -829,7 +833,8 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 % 		whose support is $ \cX\times \cC $. 
  		Let $ x,y\in \cX $ be represented 
  		by 
- 		$\bfx=[p(c,x):c\in \cC]$, $ \bfy=[p(c,y):c\in 
+ 		$\bfx=[p(c,x):c\in \cC]\in 
+ 		[0,1]^{|\cC|}$ and $ \bfy=[p(c,y):c\in 
  		\cC]\in 
  		[0,1]^{|\cC|}$.
  		%  be two vectors, where 
