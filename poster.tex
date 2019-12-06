@@ -431,7 +431,9 @@ Generally
 	$Q$ be the conditional distribution of $C$ s.t.\
 % 	given $X=x$ and $X=y$, 
 % 	i.e.,
-	$ P(c) = p(C=c| X=x) $ and $ Q(c)=p(C=c| X=y) $. The MIL can be 
+	$ P(c) = p(C=c| X=x) $ and $ Q(c)=p(C=c| X=y) $. 
+	
+	The MIL can be 
 	re-written as
 	\begin{equation}\label{eq:mil}
 	\lambda \kl{P}{M_\lambda} + (1-\lambda) \kl{Q}{M_\lambda}\enspace,
@@ -440,7 +442,7 @@ Generally
 	M_\lambda=\lambda P + (1-\lambda)Q $.
 	% is a convex combination of $ P $ and $ Q $.
 	%
-	\eqref{eq:mil} is a generalized version of 
+	Note that \eqref{eq:mil} is a generalized version of 
 	\eqref{eq:jensen-shannon} with $ \lambda=1/2 $. 
 	Therefore, for $ \lambda\in [0,1] $, we define the 
 	%\emph{Mutual Information Loss (MIL) Divergence} (also known as the 
@@ -449,9 +451,9 @@ Generally
 %	 between $P$ and 
 %	$Q$
 	by
-	$
+	\[
 	\wjs{\lambda}{P}{Q} = \lambda \kl{P}{M_\lambda} + (1-\lambda) 
-	\kl{Q}{M_\lambda}$.
+	\kl{Q}{M_\lambda}\,.\]
 % 	where $ \lambda\in [0,1] $.
 %	 and $ M_\lambda=\lambda P + (1-\lambda)Q $.
 
@@ -473,11 +475,11 @@ Generally
 	unless 
 	$ \lambda=1/2 $.
 
-\structure{\textbf{Lemma~1}} The GJSD is  $ m_\lambda $-divergence, where $	
+\structure{\textbf{Lemma~1}} The GJSD is  $ m_\lambda $-divergence, where \[	
 m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 - 
-\lambda)\ln(\lambda t+1-\lambda)$.
+\lambda)\ln(\lambda t+1-\lambda)\,.\]
 \end{block}	
-\vspace{3pt}
+%\vspace{3pt}
 
 \begin{block}{5. Positive Definite Kernel and \kr Kernel}
 	\structure{\textbf{Positive definite (PD) 
@@ -493,7 +495,7 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 %		positive integer $ n $,
 %		 real numbers
 		  $ a_1,\dots,a_n\in \bR $, and $ 
-		x,\dots,x_n\in \cX $, it holds that $
+		x_1,\dots,x_n\in \cX $, it holds that $
 		\sum_{i=1}^n \sum_{j=1}^n a_i a_j k(x_i,x_j) \ge 0$.
 	
 %	A kernel is said to be a \emph{\kr} kernel if it is  
@@ -942,20 +944,18 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 		\structure{\textbf{Apply LSH to MIPS}}
 		As an example,  
 % 		in \cref{ln:simple-lsh},
-		we use the \splsh 
+		we use \splsh 
 % 		introduced by 
 		\citep{neyshabur2015symmetric}. 
 % 		Let us have a quick review of \splsh. 
-		Assume 
-% 		that $ \cM\subseteq \bR^d $ is a finite set and 
-        that 
+		Assume $ 
+		\|\bfx 
+		\|^2_2\le M $
+% 		that $ \cM\subseteq \bR^d $ is a finite set and  
 		for all 
 		$ 
-		\bfx\in \cM $, 
+		\bfx\in \cM $.
 % 		there is a universal bound on the squared 2-norm, \ie, 
-		$ 
-		\|\bfx 
-		\|^2_2\le M $.  
 % 		\citet{neyshabur2015symmetric} assume that $ M=1 $ 
 % 		without loss 
 % 		of generality. We allow $ M $ to be any positive real number. 
@@ -967,7 +967,10 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 		Since 
 		$\|L_1\|_2 = \|L_2\|_2 = M$,
 % 		the norm of $ L_1 $ and $ L_2 $ is $ M $ and that therefore 
-		their cosine similarity equals their inner product. 
+		their cosine similarity is proportional to their inner product: 
+		\textcolor{green}{$ 
+		\frac{L_1(\bfx)^\top L_2(\bfy)}{\|L_1(\bfx)\|\| L_2(\bfy)\|} = 
+		\frac{L_1(\bfx)^\top L_2(\bfy)}{M^2}$}. 
 		In fact, \splsh is a reduction from MIPS to LSH for the cosine 
 		similarity. An 
 % 		random-projection-based 
@@ -1089,8 +1092,8 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 			\begin{algorithmic}[1]
 				\Require Discretization parameters $ J\in \mathbb{N} $ and $ 
 				\Delta>0 $.
-				\Ensure The left and right \kr transform $ \eta_1 $ and $ 
-				\eta_2 $.
+%				\Ensure The left and right \kr transform $ \eta_1 $ and $ 
+%				\eta_2 $.
 				\State $ w_j \gets (j-1/2)\Delta $ for $ j=1,\dots,J $
 				%\State Sample $w_1,\dots,w_L,w'_1,\dots,w'_{L'}$ i.i.d.\ from 
 				%the 
@@ -1134,8 +1137,7 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 				\State Sample $\bfa\sim \cN(0,I)$ and construct the hash 
 				function 
 				$ h(\bfx; M)\triangleq \sign(\bfa^\top T(\bfx, M))$,
-				where $T$ is either the left or right 
-				transform.\label{ln:simple-lsh}
+				where $T$ is either $ T_1 $ or $ T_2 $.\label{ln:simple-lsh}
 				%\State Rank the feature values $ \bfx $ in the vocabulary $ 
 				%\cM $ 
 				%according to 
