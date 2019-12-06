@@ -20,6 +20,8 @@
 \usepackage{array}
 \usepackage{colortbl}
 \usepackage{cleveref}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
 \tcbuselibrary{skins}
 
 
@@ -76,7 +78,7 @@ coltitle=black,center title}}
   \usefonttheme[onlymath]{serif}
   \usepackage{graphicx}
   \boldmath
-\usepackage[size=A0,scale=1.4,orientation=landskape]{beamerposter} 
+\usepackage[size=custom,width=152.4,height=91.44,scale=1.4,orientation=landskape]{beamerposter} 
 \title{Locality-Sensitive Hashing for $f$-Divergences and \kr Kernels: 
 	Mutual 
 	Information Loss and Beyond}
@@ -144,6 +146,8 @@ coltitle=black,center title}}
 \newcommand{\one}{\mathbf{1}}
 \newcommand{\constraint}{\mathcal{K}}
 \newcommand{\ie}{\emph{i.e.}\xspace}
+\newcommand{\eg}{\emph{e.g.}\xspace}
+
 \newcommand{\AlgMeta}{\texttt{Meta-Frank-Wolfe}\xspace}
 \newcommand{\AlgVR}{\texttt{VR-Frank-Wolfe}\xspace}
 \newcommand{\Alg}{\texttt{Mono-Frank-Wolfe}\xspace}
@@ -153,6 +157,8 @@ coltitle=black,center title}}
 \newcommand{\BCSM}{\texttt{BCSM}\xspace}
 \newcommand{\RBSM}{\texttt{RBSM}\xspace}
 \newcommand{\BSM}{\texttt{BSM}\xspace}
+\newcommand{\splsh}{\texttt{Simple-LSH}\xspace}
+
 
 %
 \newcommand{\ground}{V}
@@ -187,12 +193,12 @@ coltitle=black,center title}}
 \newlength{\threecolwid}
 %
 %
-\setlength{\paperwidth}{48in} %
-\setlength{\paperheight}{36in} %
-\setlength{\sepwid}{0.01\paperwidth} %
-\setlength{\onecolwid}{0.32\paperwidth} %
-\setlength{\twocolwid}{0.464\paperwidth} %
-\setlength{\threecolwid}{0.32\paperwidth} %
+% \setlength{\paperwidth}{48in} %
+% \setlength{\paperheight}{36in} %
+\setlength{\sepwid}{0.004\paperwidth} %
+\setlength{\onecolwid}{0.24\paperwidth} %
+\setlength{\twocolwid}{0.24\paperwidth} %
+\setlength{\threecolwid}{0.24\paperwidth} %
 \setlength{\topmargin}{-0.9in} %
 %
 \usepackage{bm}
@@ -289,7 +295,8 @@ coltitle=black,center title}}
 \begin{itemize}	
 		\item	\structure{\textbf{$ f 
 		$-divergence}}  from $ P $ 
-		to $ Q $~\cite{csiszar1964informationstheoretische}  
+		to $ Q $
+% 		~\cite{csiszar1964informationstheoretische}  
 %			If $ P\ll Q $, 
 			is defined by
 			\begin{equation}\label{eq:definition_f_divergence}
@@ -416,8 +423,10 @@ coltitle=black,center title}}
 \begin{block}{Generalized Jensen-Shannon Divergence (GJSD)}
 	 Let $P$ 
 	and 
-	$Q$ be the conditional distribution of $C$ given $X=x$ and $X=y$, 
-	i.e., $ P(c) = p(C=c| X=x) $ and $ Q(c)=p(C=c| X=y) $. The MIL can be 
+	$Q$ be the conditional distribution of $C$ s.t.\
+% 	given $X=x$ and $X=y$, 
+% 	i.e.,
+	$ P(c) = p(C=c| X=x) $ and $ Q(c)=p(C=c| X=y) $. The MIL can be 
 	re-written as
 	\begin{equation}\label{eq:mil}
 	\lambda \kl{P}{M_\lambda} + (1-\lambda) \kl{Q}{M_\lambda}\enspace,
@@ -428,7 +437,7 @@ coltitle=black,center title}}
 	%
 	\eqref{eq:mil} is a generalized version of 
 	\eqref{eq:jensen-shannon} with $ \lambda=1/2 $. 
-	Therefore, we define the 
+	Therefore, for $ \lambda\in [0,1] $, we define the 
 	%\emph{Mutual Information Loss (MIL) Divergence} (also known as the 
 	GJSD
 %	~\citep{lin1991divergence,ali1966general,dhillon2003divisive}
@@ -437,8 +446,8 @@ coltitle=black,center title}}
 	by
 	$
 	\wjs{\lambda}{P}{Q} = \lambda \kl{P}{M_\lambda} + (1-\lambda) 
-	\kl{Q}{M_\lambda}$,
-	where $ \lambda\in [0,1] $.
+	\kl{Q}{M_\lambda}$.
+% 	where $ \lambda\in [0,1] $.
 %	 and $ M_\lambda=\lambda P + (1-\lambda)Q $.
 
 %	 The
@@ -459,15 +468,17 @@ coltitle=black,center title}}
 	unless 
 	$ \lambda=1/2 $.
 
-The GJSD is  $ m_\lambda $-divergence, where $	
+\structure{\textbf{Lemma~1}} The GJSD is  $ m_\lambda $-divergence, where $	
 m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 - 
-\lambda)\ln(\lambda t+1-\lambda)$ (\structure{\textbf{Lemma~1}}).
+\lambda)\ln(\lambda t+1-\lambda)$.
 \end{block}	
 \vspace{3pt}
 
 \begin{block}{4. Positive Definite Kernel and \kr Kernel}
 	\structure{\textbf{Positive definite (PD) 
-	kernel~\citep{scholkopf2001kernel}}}
+	kernel.
+% 	~\citep{scholkopf2001kernel}
+	}}
 %		Let $ \cX $ be a non-empty set.
 		 A symmetric
 %		 , real-valued
@@ -483,7 +494,9 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 %	A kernel is said to be a \emph{\kr} kernel if it is  
 %	the difference of two PD kernels. 
 	
-	\structure{\textbf{\kr kernel~\citep{ong2004learning}}}
+	\structure{\textbf{\kr kernel.
+% 	~\citep{ong2004learning}
+	}}
 %		Let $ \cX $ be a non-empty set. 
 		A symmetric
 %		, real-valued
@@ -581,6 +594,10 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 	%		divergence and triangular discrimination, respectively.
 \end{block}
 
+\begin{block}{7. References}
+		\bibliographystyle{plainnat}
+		\bibliography{reference-list}
+	\end{block}
 \end{column} %
  		\begin{column}{\sepwid}\end{column} %
 		%
@@ -676,8 +693,14 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 			%	\end{equation}
 %		\end{lemma}
 		
-		We illustrate  $ U(\lambda) $ and $ 
-		L(\lambda) $ in \cref{sec:illu-bounds}. 
+% 		We illustrate  $ U(\lambda) $ and $ 
+% 		L(\lambda) $ in \cref{sec:illu-bounds}. 
+		\begin{figure}
+		    \centering
+		    \includegraphics[width=0.5\linewidth]{figures/approximation_ratio.pdf}
+		  %  \caption{Caption}
+		    \label{fig:approximation-ratio}
+		\end{figure}
 %		Recall that if $ \lambda=1/2 $, 
 %		the generalized Jensen-Shannon divergence reduces to the usual 
 %		Jensen-Shannon 
@@ -786,18 +809,12 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 %			p(u) = \int_0^r \frac{1}{u}f_2(t/u)(1-t/r)dt$.
 		
 	\end{block}
-	
-
-	
-	\begin{block}{\kr-LSH for Mutual Information Loss}
- 		We first show that the MIL is a 
- 		\kr 
- 		kernel. 
+	\begin{block}{MIL is a \kr Kernel}
+%  		We first show that the MIL is a 
+%  		\kr 
+%  		kernel. 
  		%\lc{need to review what's \kr kernel in prelim}. 
- 		Then
- 		we propose \emph{\kr-LSH}, an asymmetric LSH 
- 		method~\cite{shrivastava2014asymmetric} for MIL. 
- 		It can be extended to other \kr kernels.
+ 		
 % 		, 
 % 		provided that the associated positive definite kernels allow an 
 % 		explicit 
@@ -810,7 +827,7 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 % 		whose support is $ \cX\times \cC $. 
  		Let $ x,y\in \cX $ be represented 
  		by 
- 		$\bfx=[p(c,x):c\in \cC], \bfy=[p(c,y):c\in 
+ 		$\bfx=[p(c,x):c\in \cC]$, $ \bfy=[p(c,y):c\in 
  		\cC]\in 
  		[0,1]^{|\cC|}$.
  		%  be two vectors, where 
@@ -819,8 +836,8 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
  		%labels. The probability $ p(c,x) $ is the frequency of the data points 
  		%whose 
  		%feature value is $ x $ and whose label is $ c $.
- 		We consider the MIL of merging $ x  $ and $ y $:
- 		$ I(X;C)-I(\pi_{x,y}(X);C)$. 
+%  		We consider the MIL of merging $ x  $ and $ y $:
+%  		$ I(X;C)-I(\pi_{x,y}(X);C)$. 
  		
  		\structure{\textbf{Theorem~4}}
 % 			The mutual information loss
@@ -845,19 +862,22 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 % 		 the following lemma.
  		
  		\structure{\textbf{Lemma~3}}
- 			 $ k $ is a PD kernel on $ [0,1] $ and 
- 			 endowed with the explicit feature map $ x\mapsto \Phi_w(x) $ 
+ 			 $ k $ is a PD kernel on $ [0,1] $ 
+ 			%  with the  feature map $ x\mapsto \Phi_w(x) $ 
  			s.t.\ 
- 			$ k(x,y) =  \int_\bR \Phi_w(x)^* \Phi_w(y) dw $, 
+ 			$ k(x,y) = \langle \Phi(x),\Phi(y)\rangle \triangleq \int_\bR \Phi_w(x)^* \Phi_w(y) dw $, 
  			where $
- 			\Phi_w(x) \triangleq e^{-iw\ln(x)}\sqrt{x\frac{2\sech(\pi 
- 			w)}{1+4w^2}}$ and $ \Phi_w(x)^* $ denotes the complex conjugate of 
- 			$ \Phi_w(x) $.
+ 			\Phi_w(x) \triangleq e^{-iw\ln(x)}
+ 			\sqrt{x
+ 			\rho(w)}$, $\rho(w)=\frac{2\sech(\pi 
+ 			w)}{1+4w^2}$ and $^*$ denotes the complex conjugate.
+ 			% $ \Phi_w(x)^* $ denotes the complex conjugate of 
+ 			% $ \Phi_w(x) $.
 
  		
- 		The map $ \Phi(x):w\mapsto \Phi_w(x) $ is called the \emph{feature map} 
- 		of $ x 
- 		$. 
+%  		The map $ \Phi(x):w\mapsto \Phi_w(x) $ is called the \emph{feature map} 
+%  		of $ x 
+%  		$. 
 % 		The integral $ \int_\bR \Phi_w(x)^* \Phi_w(y) dw $ is also denoted 
 % 		by a 
 % 		Hermitian inner product $ \langle \Phi(x),\Phi(y)\rangle $.
@@ -874,120 +894,67 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 % 		This method can be easily extended to other \kr kernels, provided that 
 % 		the 
 % 		associated positive definite kernels admit an explicit feature map.
-
+\end{block}
+\end{column} %
+\begin{column}{\sepwid}
+    
+\end{column}
+\begin{column}{\onecolwid}
+\vspace{-40pt}
+    
+\begin{block}{Intuition of \kr-LSH: Reduction to Maximum Inner Product Search (MIPS)}
  		We reduce the problem of designing the LSH for a \kr kernel to 
- 		the problem of designing the LSH for maximum inner product search 
-(MIPS)~\citep{shrivastava2014asymmetric,neyshabur2015symmetric,yan2018norm}.
- 		We call this general reduction \emph{\kr-LSH}.
+ 		the problem of designing the LSH for MIPS~\citep{shrivastava2014asymmetric}.
+%  		based on the following intuition.
+%  		We call this general reduction \emph{\kr-LSH}.
  		
 % 		\subsubsection{Reduction to Maximum Inner Product Search}
  		
 % 		Our reduction is based on the following observation.
- 		\structure{\textbf{Observation:}} Suppose that $ K $ 
- 		is a 
- 		\kr kernel on $ \cX $ s.t.\ $ K=K_1-K_2 $ where $ K_1 $ and $ K_2 $ 
- 		are 
- 		PD kernels. 
- 		 Assume that $ K_1 $ and $ K_2$ 
- 		admit 
- 		feature maps $ \Phi_1 $ and $\Phi_2 $ such that $ K_1(x,y)=\langle 
- 		\Psi_1(x),\Psi_1(y)\rangle $ and $ K_2(x,y)=\langle 
- 		\Psi_2(x),\Psi_2(y)\rangle 
- 		$. Then the \kr kernel $ K $ can also represented as an inner product 
+ 		\structure{\textbf{Intuition:}} If 
+%  		PD kernels $ K_1 $ and $ K_2$ satisfy
+%  		admit 
+%  		feature maps $ \Phi_1 $ and $\Phi_2 $ s.t.\
+ 		$ K_i(x,y)=\langle 
+ 		\Psi_i(x),\Psi_i(y)\rangle $ ($i=1,2$),
+%  		and $ K_2(x,y)=\langle 
+%  		\Psi_2(x),\Psi_2(y)\rangle 
+%  		$, 
+ 		then $ K = K_1-K_2 $ can also represented as an inner product 
  		\begin{equation}\label{eq:krein_inner_product}
  		K(x,y)=\langle \Phi_1(x)\oplus \Phi_2(x), \Phi_1(y)\oplus 
  		-\Phi_2(y)\rangle\enspace,
  		\end{equation}
- 		where $ \oplus $ denotes the direct sum. If we define a pair of 
- 		transforms $ 
- 		T_1(x) \triangleq \Phi_1(x)\oplus \Phi_2(x)
- 		$ and $ T_2(x)\triangleq \Phi_1(x)\oplus -\Phi_2(x)
- 		$,
- 		then we have $
- 		K(x,y)=\langle T_1(x),T_2(y)\rangle
- 		$.
- 		We call this pair of transforms \emph{left and right \kr transforms}.
-% 		
-% 		\begin{algorithm}[tbh]
-% 			\caption{ \kr-LSH}\label{alg:krein-lsh}
-% 			\begin{algorithmic}[1]
-% 				\Require Discretization parameters $ J\in \mathbb{N} $ and $ 
-% 				\Delta>0 $.
-% 				\Ensure The left and right \kr transform $ \eta_1 $ and $ 
-% 				\eta_2 $.
-% 				\State $ w_j \gets (j-1/2)\Delta $ for $ j=1,\dots,J $
-% 				%\State Sample $w_1,\dots,w_L,w'_1,\dots,w'_{L'}$ i.i.d.\ from 
-% 				%the 
-% 				%distribution 
-% 				%with density \[\frac{\sech(\pi w)}{\ln(2)(1+4w^2)}\,.\]
-% 				\State Construct the atomic transform \[
-% 				\tau(x,w,j)\triangleq 
-% 				\left[\cos(w\ln(x))\sqrt{2x\int_{(j-1)\Delta}^{j\Delta} 
-% 					\rho(w')dw'},\sin(w\ln(x))\sqrt{ 
-% 					2x\int_{(j-1)\Delta}^{j\Delta} 
-% 					\rho(w')dw' }\right]
-% 				\enspace.
-% 				\]
-% 				\State Construct the left and right basic transform 
-% 				\begin{align*}
-% 				\eta_1(\bfx)\triangleq{} & \bigoplus_{j=1}^J 
-% 				\tau(p(x),w_j,j)\oplus 
-% 				\bigoplus_{j=1}^{J} \bigoplus_{c\in \cC} \tau(p(c,x),w_j,j)\,,\\
-% 				\eta_2(\bfx)\triangleq{} & \bigoplus_{j=1}^J 
-% 				\tau(p(x),w_j,j)\oplus 
-% 				\bigoplus_{j=1}^{J} \bigoplus_{c\in \cC} -\tau(p(c,x),w_j,j)\,.
-% 				%\eta_2(\bfy,\bfw,\bfw',L,L')\triangleq{} & \bigoplus_{j=1}^L 
-% 				%\tau(p(y),w_j,L)\oplus \bigoplus_{j=1}^{L'} \bigoplus_{c\in 
-% 				%\cC} 
-% 				%-\tau(p(c,y),w'_j,L')\,.
-% 				\end{align*}
-% 				%\State \Return $ \eta_1 $ and $ \eta_2 $
-% 				\State Construct the left and right \kr transform
-% 				\begin{equation*}
-% 				T_1(\bfx,M) \triangleq{} 
-% 				[\eta_1,\sqrt{M-\|\eta_1(\bfx)\|^2_2},0],\quad T_2(\bfy,M) 
-% 				\triangleq{} 
-% 				[\eta_2,0,\sqrt{M-\|\eta_2(\bfx)\|^2_2}]\,.
-% 				\end{equation*}
-% 				where $ M $ is a constant such that $ M\ge \|\eta_1(\bfx)\|_2^2 
-% 				$ (note 
-% 				that $ 
-% 				\|\eta_1(\bfx)\|_2 = \|\eta_2(\bfx)\|_2 $).
-% 				\State Sample $\bfa\sim \cN(0,I)$ and construct the hash 
-% 				function 
-% 				$ h(\bfx; M)\triangleq \sign(\bfa^\top T(\bfx, M))$,
-% 				where $T$ is either the left or right 
-% 				transform.\label{ln:simple-lsh}
-% 				%\State Rank the feature values $ \bfx $ in the vocabulary $ 
-% 				%\cM $ 
-% 				%according to 
-% 				%$ \|\eta_1(\bfx)\|_2 $.
-% 				%\State Partition the vocabulary of feature values $ \cM $ into 
-% 				%$ m $ 
-% 				%sub-vocabularies $ \{ \cM_1,\dots,\cM_m \} $ such that the 
-% 				%sub-vocabulary $ 
-% 				%\cM_i 
-% 				%$ contains the feature values whose $ \|\eta_1(\bfx)\|_2 $ are 
-% 				%ranked 
-% 				%in the 
-% 				%range $ [(i-1)\frac{|\cM|}{m},i\frac{|\cM|}{m}] $.
-% 				%\For{each sub-vocabulary $ \cM_i $}
-% 				%\State Build 
-% 				%\EndFor
-% 			\end{algorithmic}
-% 		\end{algorithm}
-% 		
-% 		We exemplify this technique by applying it to the MIL divergence.
-% 		For ease of exposition, we define $ \rho(w)\triangleq \frac{2\sech(\pi 
+ 		where $ \oplus $ denotes the direct sum. 
+ 		
+ 		% 		We define $ \rho(w)\triangleq \frac{2\sech(\pi 
 % 			w)}{1+4w^2} $. The proposed approach \kr-LSH is presented in 
 % 		\cref{alg:krein-lsh}. 
-% 		To make the intuition of \eqref{eq:krein_inner_product} applicable in a 
-% 		practical implementation, we have
-% 		%The high-level idea is
-% 		to truncate and discretize the 
-% 		integral $ k(x,y) = \int_R \Phi_w(x)^* \Phi_w(y) 
-% 		dw  $. First we analyze the truncation. The analysis is similar to 
+		To make the intuition 
+% 		of \eqref{eq:krein_inner_product}
+		applicable in a 
+		practical implementation, we have
+		%The high-level idea is
+		to truncate and discretize the 
+		integral $ k(x,y) = \int_R \Phi_w(x)^* \Phi_w(y) 
+		dw  $. 
+% 		First we analyze the truncation. The analysis is similar to 
 % 		Lemma~10 of \citep{abdullah2016sketching}.
+%  		If we define  $ 
+%  		T_1(x) \triangleq \Phi_1(x)\oplus \Phi_2(x)
+%  		$ and $ T_2(x)\triangleq \Phi_1(x)\oplus -\Phi_2(x)
+%  		$,
+%  		then we have $
+%  		K(x,y)=\langle T_1(x),T_2(y)\rangle
+%  		$.
+%  		We call this pair of transforms \emph{left and right \kr transforms}.
+		
+% 		\begin{algorithm}[tbh]
+% 			\caption{ \kr-LSH}\label{alg:krein-lsh}
+        
+		
+% 		We exemplify this technique by applying it to the MIL.
+
 % 		\begin{lemma}[Truncation error bound, proof in 
 % 		\cref{app:truncation}]\label{lem:truncation}
 % 			If $ t>0 $ and $ x,y\in [0,1] $, the truncation error can be 
@@ -1015,7 +982,7 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 % 				\rho(w')dw'},\sin(w\ln(x))\sqrt{ 2x\int_{(j-1)\Delta}^{j\Delta} 
 % 				\rho(w')dw' }\right]\in \bR^2 $.
 % 		\end{lemma}
-% 		
+		
 % 		%Therefore, to guarantee that the error in truncation is at most $ 
 % 		%\epsilon $, 
 % 		%we require that $ \Delta J \ge \ln(4/\epsilon) $.
@@ -1037,15 +1004,15 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 % 		%$ and $ \Delta = \frac{\epsilon}{1+|\cC|} $, the total approximation 
 % 		%loss is at 
 % 		%most $ \epsilon $.
-% 		
+		
 % 		By \cref{lem:truncation,lem:discretization}, to guarantee that the 
 % 		total approximation error (including both truncation and discretization 
 % 		errors) is at most $ \epsilon $, it suffices to set $ \Delta = 
 % 		\frac{\epsilon}{4(1+|\cC|)} $ and $ J\ge 
 % 		\frac{4(1+|\cC|)}{\epsilon}\ln\frac{8(1+|\cC|)}{\epsilon} $.
-% 		
-%% 		\subsubsection{LSH for Maximum Inner Product Search}
-% 		
+		
+% % 		\subsubsection{LSH for Maximum Inner Product Search}
+		
 % 		The second stage of our proposed method is to apply LSH to the MIPS 
 % 		problem. 
 % 		As an example,  
@@ -1078,12 +1045,12 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 % 		%\citep{neyshabur2015symmetric}, we know that \kr-LSH is a $ 
 % 		%(S,cS,p_1,p_2) 
 % 		%$-LSH for any $ 0<S<1 $ and $ 0<c<1 $.
-% 		
+		
 % 		%Let $ K(\bfx,\bfy) = k_1(\bfx,\bfy)-k_2(\bfx,\bfy)$ be a \kr kernel, 
 % 		%where $ 
 % 		%k_1 $ and $ k_2 $ are two positive definite kernels.
-% 		
-%% 		\paragraph{Discussion}
+		
+% % 		\paragraph{Discussion}
 % 		We have some important remarks for practical implementation of \kr-LSH. 
 % 		Although \citep{neyshabur2015symmetric} provides a theoretical 
 % 		guarantee for 
@@ -1096,13 +1063,76 @@ m_\lambda(t) = \lambda t \ln t - (\lambda t + 1 -
 % 		norm-ranging 
 % 		method~\citep{yan2018norm}.
 	\end{block}
-	
-	\begin{block}{7. References}
-		\bibliographystyle{plainnat}
-		\bibliography{reference-list}
-	\end{block}
-	
-\end{column} %
+	\begin{block}{Algorithm \kr-LSH}
+			\begin{algorithmic}[1]
+				\Require Discretization parameters $ J\in \mathbb{N} $ and $ 
+				\Delta>0 $.
+				\Ensure The left and right \kr transform $ \eta_1 $ and $ 
+				\eta_2 $.
+				\State $ w_j \gets (j-1/2)\Delta $ for $ j=1,\dots,J $
+				%\State Sample $w_1,\dots,w_L,w'_1,\dots,w'_{L'}$ i.i.d.\ from 
+				%the 
+				%distribution 
+				%with density \[\frac{\sech(\pi w)}{\ln(2)(1+4w^2)}\,.\]
+				\State Construct the atomic transform \begin{align*}
+				\tau(x,w,j)\triangleq{}&
+				\left[\cos(w\ln(x))\sqrt{2x\int_{(j-1)\Delta}^{j\Delta} 
+					\rho(w')dw'},\right.\\
+					& \left.\sin(w\ln(x))\sqrt{ 
+					2x\int_{(j-1)\Delta}^{j\Delta} 
+					\rho(w')dw' }\right]
+				\,.
+				\end{align*}
+				\State Construct the left and right basic transform 
+				\begin{align*}
+				\eta_1(\bfx)\triangleq{} & \bigoplus_{j=1}^J 
+				\tau(p(x),w_j,j)\oplus 
+				\bigoplus_{j=1}^{J} \bigoplus_{c\in \cC} \tau(p(c,x),w_j,j)\,,\\
+				\eta_2(\bfx)\triangleq{} & \bigoplus_{j=1}^J 
+				\tau(p(x),w_j,j)\oplus 
+				\bigoplus_{j=1}^{J} \bigoplus_{c\in \cC} -\tau(p(c,x),w_j,j)\,.
+				%\eta_2(\bfy,\bfw,\bfw',L,L')\triangleq{} & \bigoplus_{j=1}^L 
+				%\tau(p(y),w_j,L)\oplus \bigoplus_{j=1}^{L'} \bigoplus_{c\in 
+				%\cC} 
+				%-\tau(p(c,y),w'_j,L')\,.
+				\end{align*}
+				%\State \Return $ \eta_1 $ and $ \eta_2 $
+				\State Construct the left and right \kr transform
+				\begin{align*}
+				T_1(\bfx,M) \triangleq{} & 
+				[\eta_1,\sqrt{M-\|\eta_1(\bfx)\|^2_2},0],\\ T_2(\bfy,M) 
+				\triangleq{} &
+				[\eta_2,0,\sqrt{M-\|\eta_2(\bfx)\|^2_2}]\,.
+				\end{align*}
+				where $ M $ is a constant such that $ M\ge \|\eta_1(\bfx)\|_2^2 
+				$ (note 
+				that $ 
+				\|\eta_1(\bfx)\|_2 = \|\eta_2(\bfx)\|_2 $).
+				\State Sample $\bfa\sim \cN(0,I)$ and construct the hash 
+				function 
+				$ h(\bfx; M)\triangleq \sign(\bfa^\top T(\bfx, M))$,
+				where $T$ is either the left or right 
+				transform.\label{ln:simple-lsh}
+				%\State Rank the feature values $ \bfx $ in the vocabulary $ 
+				%\cM $ 
+				%according to 
+				%$ \|\eta_1(\bfx)\|_2 $.
+				%\State Partition the vocabulary of feature values $ \cM $ into 
+				%$ m $ 
+				%sub-vocabularies $ \{ \cM_1,\dots,\cM_m \} $ such that the 
+				%sub-vocabulary $ 
+				%\cM_i 
+				%$ contains the feature values whose $ \|\eta_1(\bfx)\|_2 $ are 
+				%ranked 
+				%in the 
+				%range $ [(i-1)\frac{|\cM|}{m},i\frac{|\cM|}{m}] $.
+				%\For{each sub-vocabulary $ \cM_i $}
+				%\State Build 
+				%\EndFor
+			\end{algorithmic}
+% 		\end{algorithm}
+        \end{block}
+\end{column}
  
 		
 	\end{columns} %
